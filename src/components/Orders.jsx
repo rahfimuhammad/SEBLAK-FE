@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Box } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import { formattedDate } from '../function/formattedDate'
 
 const Orders = () => {
@@ -9,11 +9,23 @@ const Orders = () => {
 
   const getOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/order')
+      const response = await axios.get('http://localhost:5000/order/finishedorder/processed')
 
       setOrders(response.data?.data)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const finishOrder = async (orderId, client) => {
+    try {
+      const response = await axios.patch(`http://localhost:5000/order/${orderId}`, {
+        client: client
+      })
+
+      console.log(response)
+    } catch (error) {
+      console.log(error.message)
     }
   }
 
@@ -28,8 +40,10 @@ const Orders = () => {
         <p>{formattedDate(order.createdAt)}</p>
         {order?.orderlist.map((or, i) => {
           return (
-            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>
+            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}} onClick={() => console.log(or)}>
               <h5>Pesanan {i + 1}</h5>
+              <p>Level {or?.spicylevel?.level}</p>
+              <p>Ket: {or?.additional}</p>
               {
                 or?.orderlistitem?.map((o, i) => {
                   return (
@@ -47,6 +61,7 @@ const Orders = () => {
             </div>
           )
         })}
+        <Button colorScheme='teal'onClick={() => finishOrder(order.id, order.client)}>Finish Order</Button>
       </Box>
     )
   })

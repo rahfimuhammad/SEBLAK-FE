@@ -39,7 +39,9 @@ const CreateOrder = () => {
     try {
       onOpen()
       const response = await axios.post('http://localhost:5000/orderlist', {
-        orderId: orderId
+        orderId: orderId,
+        additional: "telor mata sapi",
+        spicylevelId: 4
         }
       )
         setOrderlistId(response?.data?.data?.id)
@@ -72,7 +74,7 @@ const CreateOrder = () => {
           {orderId && <Box mt='5px' bg='gray.200' w='400px' h='200px' borderRadius='10px' onClick={() => createOrderList()}>Add Orderlist</Box>}
         <div>
           {orderlists.map((orderlist, index) => (
-              <Orderlist key={index} orderlist={orderlist}/>
+              <Orderlist key={index} orderlist={orderlist} index={index}/>
           ))}
         </div>
         <Modal isOpen={isOpen} onClose={onClose}>
