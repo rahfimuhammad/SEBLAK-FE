@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Box, FormControl, Input, Button } from '@chakra-ui/react'
+import { formatCurrency } from "../function/formattedCurrency"
 
 const Products = () => {
 
@@ -11,7 +13,6 @@ const Products = () => {
     try {
       const response = await axios.get('http://localhost:5000/products')
       setProducts(response?.data?.products)
-      console.log(response)
 
     } catch (error) {
       console.log(error)
@@ -42,10 +43,10 @@ const Products = () => {
 
   const mapProducts = products?.map((product, index) => {
       return (
-        <div>
+        <Box w='100%' display='flex' justifyContent='space-between' key={index}>
           <p>{product.name}</p>
-          <p>{product.price}</p>
-        </div>
+          <p>{formatCurrency(product.price)}</p>
+        </Box>
       )
     })
 
@@ -55,17 +56,16 @@ const Products = () => {
 
 
   return (
-    <div>
-        <h1>Products</h1>
-        <div>
+    <Box w='100%' display='flex' gap='20px'>
+        <FormControl w='40%' display='flex' flexDirection='column' gap='10px'>
+          <Input style={{color: "black"}} value={itemName} placeholder='Item name' type="text" onChange={(e) => setItemName(e.target.value) } />
+          <Input style={{color: "black"}} value={price} placeholder='Item price' type="number" onChange={(e) => setPrice(parseInt(e.target.value)) } />
+          <Button onClick={(e) => handleSubmit(e)} type='submit' colorScheme='teal'>SAVE</Button>
+        </FormControl>
+        <Box w='60%'>
           {mapProducts}
-        </div>
-        <form onSubmit={handleSubmit}>
-          <input style={{color: "black"}} value={itemName} placeholder='item name' type="text" onChange={(e) => setItemName(e.target.value) } />
-          <input style={{color: "black"}} value={price} placeholder='price' type="number" onChange={(e) => setPrice(parseInt(e.target.value)) } />
-          <button>SAVE</button>
-        </form>
-    </div>
+        </Box>
+    </Box>
   )
 }
 

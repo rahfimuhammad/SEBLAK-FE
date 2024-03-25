@@ -28,7 +28,7 @@ const Orders = () => {
         <p>{formattedDate(order.createdAt)}</p>
         {order?.orderlist.map((or, i) => {
           return (
-            <div style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>
+            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>
               <h5>Pesanan {i + 1}</h5>
               {
                 or?.orderlistitem?.map((o, i) => {
