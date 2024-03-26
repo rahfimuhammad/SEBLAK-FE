@@ -1,11 +1,11 @@
 import { Box } from '@chakra-ui/react';
-import Main from './page/Main';
+import AppShell from './Layout/AppShell';
 
 function App() {
 
   return (
     <Box w='100vw' bg='red'>
-      <Main/>
+      <AppShell/>
     </Box>
   );
 }
