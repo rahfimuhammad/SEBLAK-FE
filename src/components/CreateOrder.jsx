@@ -4,6 +4,7 @@ import { useDisclosure } from '@chakra-ui/react'
 import { Box, Modal, ModalOverlay, FormControl, Button, FormLabel, Input } from '@chakra-ui/react'
 import CreateOrderList from './CreateOrderList'
 import Orderlist from './Orderlist'
+import { IsSmallScreen } from '../hooks/useSmallScreen'
 
 const CreateOrder = () => {
 
@@ -12,6 +13,7 @@ const CreateOrder = () => {
   const [orderId, setOrderId] = useState("")
   const [orderlistId, setOrderlistId] = useState("")
   const [orderlists, setOrderlists] = useState([])
+  const isSmall = IsSmallScreen()
 
   const getOrderlists = async () => {
 
@@ -64,15 +66,13 @@ const CreateOrder = () => {
   }
 
   return (
-    <div>
-        <h1>Create Order</h1>
-        <FormControl action="submit" maxW='400px' gap='5px'>
-          <FormLabel>Nama Pemesan:</FormLabel>
-          <Input value={clientName} type="text" onChange={(e) => setClientName(e.target.value)} />
-          {!orderId && <Button disabled={!clientName} onClick={(e) => handleSubmit(e)} mt='5px' colorScheme='teal'>Create New Order</Button>}
+    <>
+        <FormControl action="submit" w={isSmall? '95%' : '550px'} gap='5px' display='flex' alignItems='center'>
+          <Input w='60%' placeholder='Nama Pemesan' value={clientName} type="text" onChange={(e) => setClientName(e.target.value)} />
+          <Button w='40%' isDisabled={!clientName || orderId} onClick={(e) => handleSubmit(e)} colorScheme='teal' padding='10px'>Create New Order</Button>
         </FormControl>
-          {orderId && <Box mt='5px' bg='gray.200' w='400px' h='200px' borderRadius='10px' onClick={() => createOrderList()}>Add Orderlist</Box>}
-        <div>
+          {orderId && <Box bg='gray.200' w={isSmall? '95%' : '550px'} h='200px' borderRadius='10px' onClick={() => createOrderList()}>Add Orderlist</Box>}
+        <div style={{display: "flex", flexDirection: "column", gap: "10px", width: "100%", alignItems: "center"}}>
           {orderlists.map((orderlist, index) => (
               <Orderlist key={index} orderlist={orderlist} index={index}/>
           ))}
@@ -82,7 +82,7 @@ const CreateOrder = () => {
             <CreateOrderList orderlistId={orderlistId} onClose={onClose} getOrderlists={getOrderlists}/>
         </Modal>
         {orderlists.length?  <Button colorScheme='teal' onClick={() => saveOrder()}>Save Order</Button> : null} 
-    </div>
+    </>
   )
 }
 

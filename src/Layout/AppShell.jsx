@@ -38,7 +38,12 @@ const Appshell = () => {
                 </div>
             </div>
             <div className="main-content">
-                {activeTab === null? "" : <Tab/>}
+                <div className="header">
+                    <h1>{tabs[activeTab]?.title}</h1>
+                </div>
+                <div className="content-container">
+                    {activeTab === null? "" : <Tab/>}
+                </div>
             </div>
         </div>
     )

@@ -19,7 +19,6 @@ const Transactions = () => {
   }, [])
   return (
     <div>
-      <h1>Transactions</h1>
       <div>
         {finishedOrder?.map((value, index) => (
           <p key={index}>{value.client}</p>
