@@ -5,9 +5,10 @@
 }
 
 .sidebar {
-    width: 25%;
+    width: 20%;
+    border-right: 1px solid black;
     height: 100vh;
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,11 +33,12 @@
 }
 
 .active {
-    background-color: teal;
+    background-color: black;
+    color: white;
 }
 
 .tab-wrapper {
-    width: 70%;
+    width: 80%;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -53,7 +55,7 @@
     height: 60px;
     width: 100%;
     position: fixed;
-    background-color: teal;
+    background-color: black;
     color: white;
     display: flex;
     align-items: center;
@@ -106,8 +108,10 @@
         
         .sidebar {
             width: 100%;
-            height: 60px;
+            height: 59px;
             position: absolute;
+            border-top: 1px solid black;
+            border-right: 0px solid black;
             bottom: 0;
             left: 0;
             display: flex;

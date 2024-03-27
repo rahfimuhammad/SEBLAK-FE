@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box } from '@chakra-ui/react'
 import Orders from "../components/Orders";
 import CreateOrder from "../components/CreateOrder";
 import Transactions from "../components/Transactions";

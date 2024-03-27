@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Box, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, ModalBody, List, 
-         ListItem, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, 
-         NumberInput, NumberInputField, Button, Text } from '@chakra-ui/react'
+import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
+         NumberIncrementStepper, NumberInputField, Text } from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
+import ModalElement from './ModalElement'
 
-const CreateOrderList = ({ orderlistId, onClose, getOrderlists }) => {
+const NewOrderList = ({ orderlistId, onClose, getOrderlists }) => {
 
     const [products, setProducts] = useState([])
     const [orderItem, setOrderItem] = useState([])
@@ -93,22 +93,12 @@ const CreateOrderList = ({ orderlistId, onClose, getOrderlists }) => {
       })
 
   return (
-    <ModalContent w='fit-content' maxW='98%'>
-        <ModalHeader>Pilih Topping</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-            <List spacing={3}>
-                {mapProducts}
-            </List>
-        </ModalBody>
-        <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Close
-            </Button>
-            <Button onClick={(e) => addItemToOrderlist(e)} variant='ghost'>Create Orderlist</Button>
-        </ModalFooter>
-    </ModalContent>
+    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={addItemToOrderlist} modalHeader={"Add Item"}>
+      <List spacing={3}>
+        {mapProducts}
+      </List>
+    </ModalElement>
   )
 }
 
-export default CreateOrderList
+export default NewOrderList

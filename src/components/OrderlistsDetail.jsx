@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { ModalContent, ModalCloseButton, ModalHeader, ModalFooter, ModalBody, Button } from '@chakra-ui/react'
+import ModalElement from './ModalElement'
 
 const OrderlistsDetail = ({ orderId, onClose }) => {
 
@@ -20,14 +20,11 @@ const OrderlistsDetail = ({ orderId, onClose }) => {
   }, [orderId])
 
   return (
-    <div>
-        <ModalContent w='fit-content' maxW='98%'>
-        <ModalHeader>Order Detail</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
+    <>
+      <ModalElement onClose={onClose} modalHeader={"Order Detail"} action={"Finish Order"}>
         {orderDetail?.map((or, i) => {
           return (
-            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}} onClick={() => console.log(or)}>
+            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>
               <h5>Pesanan {i + 1}</h5>
               <p>Level {or?.spicylevel?.level}</p>
               <p>Ket: {or?.additional}</p>
@@ -43,19 +40,13 @@ const OrderlistsDetail = ({ orderId, onClose }) => {
                     </div>
                     </div>
                   )
-                      }) 
+                }) 
               }
             </div>
           )
         })}
-        </ModalBody>
-        <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Close
-            </Button>
-        </ModalFooter>
-    </ModalContent>
-    </div>
+      </ModalElement>
+    </>
   )
 }
 
