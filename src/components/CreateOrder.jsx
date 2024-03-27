@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import OrderImage from "../assets/OrderImage.png"
 import { useDisclosure } from '@chakra-ui/react'
 import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
 import NewOrderList from './NewOrderList'
@@ -54,22 +55,42 @@ const CreateOrder = () => {
     }
   }
 
+  const processOrder = async () => {
+
+    try {
+      const response = await axios.patch(`http://localhost:5000/order/process/${orderId}`, {
+        client: clientName
+      })
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setClientName("")
+      setOrderId("")
+      setOrderlistId("")
+      setOrderlists([])
+    }
+  }
+
   const saveOrder = () => {
-    setClientName("")
-    setOrderId("")
-    setOrderlistId("")
-    setOrderlists([])
+    processOrder()
   }
 
   return (
     <>
-        {orderId && <Box bg='gray.200' w={isSmall? '95%' : '550px'} h='200px' borderRadius='10px' onClick={() => createOrderList()}>Add Orderlist</Box>}
+        {orderId && <Box bg='gray.200' w={isSmall? '95%' : '550px'} mt='10px' mb='10px' h='200px' borderRadius='10px' onClick={() => createOrderList()}>Add Orderlist</Box>}
         <div style={{display: "flex", flexDirection: "column", gap: "10px", width: "100%", alignItems: "center"}}>
           {orderlists.map((orderlist, index) => (
               <Orderlist key={index} orderlist={orderlist} index={index}/>
           ))}
         </div>
-        {!orderId &&<Button onClick={onOpen}>Create New Order</Button>}
+        {!orderId 
+        &&
+        <div style={{width: "100%", height: `${isSmall? "calc(100vh - 120px)" : "calc(100vh - 60px)"}`, display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
+            <img src={OrderImage} style={{width: "400px", height: "auto"}}/>
+            <Button onClick={onOpen}>Create New Order</Button>
+          </div>
+        </div>}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
               {orderId
@@ -77,7 +98,7 @@ const CreateOrder = () => {
               : <NewOrder clientName={clientName} setClientName={setClientName} onClose={onClose} actionFunction={createNewOrder}/>
               }
         </Modal>
-        {orderlists.length?  <Button colorScheme='teal' onClick={() => saveOrder()}>Save Order</Button> : null}
+        {orderlists.length?  <Button colorScheme='teal' mt='10px' mb='10px' onClick={() => saveOrder()}>Save Order</Button> : null}
     </>
   )
 }

@@ -45,10 +45,11 @@
 }
 
 .main-content {
-    width: 75%;
+    width: 80%;
     height: 100vh;
     background-color: white;
     overflow-y: auto;
+    position: relative;
 }
 
 .header {
@@ -64,14 +65,14 @@
 
 .content-container {
     width: 100%;
+    position: absolute;
     height: fit-content;
-    margin-top: 60px;
+    min-height: calc(100vh - 80px);
+    top: 60px;
+    right: 0;
     display: flex;
     flex-direction: column;
-    padding: 10px 0;
-    gap: 15px;
     align-items: center;
-    justify-content: center;
 }
 
     @media only screen and (max-width: 990px) {
@@ -127,5 +128,9 @@
         .main-content {
             width: 100%;
             height: calc(100vh - 60px);
+        }
+
+        .content-container {
+            min-height: calc(100vh - 120px);
         }
     }

@@ -27,7 +27,7 @@ const Orders = () => {
     e.stopPropagation()
 
     try {
-      const response = await axios.patch(`http://localhost:5000/order/${orderId}`, {
+      const response = await axios.patch(`http://localhost:5000/order/finish/${orderId}`, {
         client: client
       })
 
@@ -64,7 +64,7 @@ const Orders = () => {
         <Box w='100%' overflow='auto' h='calc(100% - 24px)' display='flex' flexDirection='column' gap='30px' alignItems='center' onClick={() => console.log(orderId)}>
           <div>
             <Button onClick={() => setStatus("processed")}>Processed</Button>
-            <Button onClick={() => setStatus("finished")}>Finished</Button>
+            <Button onClick={() => setStatus("pending")}>Pending</Button>
           </div>
           {mapOrders}
           <Modal isOpen={isOpen} onClose={onClose}>

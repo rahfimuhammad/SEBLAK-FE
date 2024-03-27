@@ -7,6 +7,7 @@ const Products = () => {
 
   const [products, setProducts] = useState([])
   const [itemName, setItemName] = useState("")
+  const [category, setCategory] = useState("")
   const [price, setPrice] = useState("")
 
   const getProducts = async () => {
@@ -25,6 +26,7 @@ const Products = () => {
     try {
         const response = await axios.post('http://localhost:5000/products', {
           name: itemName,
+          category: category,
           price: price
         })
 
@@ -36,6 +38,7 @@ const Products = () => {
     } finally {
       
       setItemName("")
+      setCategory("")
       setPrice("")
     }
 
@@ -59,6 +62,7 @@ const Products = () => {
     <Box w='100%' display='flex' gap='20px'>
         <FormControl w='40%' display='flex' flexDirection='column' gap='10px'>
           <Input style={{color: "black"}} value={itemName} placeholder='Item name' type="text" onChange={(e) => setItemName(e.target.value) } />
+          <Input style={{color: "black"}} value={category} placeholder='Category' type="text" onChange={(e) => setCategory(e.target.value) } />
           <Input style={{color: "black"}} value={price} placeholder='Item price' type="number" onChange={(e) => setPrice(parseInt(e.target.value)) } />
           <Button onClick={(e) => handleSubmit(e)} type='submit' colorScheme='teal'>SAVE</Button>
         </FormControl>
