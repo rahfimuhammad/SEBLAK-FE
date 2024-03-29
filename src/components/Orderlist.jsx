@@ -9,7 +9,7 @@ const Orderlist = ({ orderlist, index }) => {
 
   return (
     <div style={{width: `${isSmall? "95%" : "550px"}`, borderRadius: "10px", height: "fit-content", overflow: "hidden", border: "1px solid #cccccc", paddingBottom: "10px"}} onClick={() => console.log(orderlist)}>
-        <div style={{width: "100%", height: "40px", padding: "0 10px", backgroundColor: "teal", color: "white", display: "flex", alignItems: "center"}}>
+        <div style={{width: "100%", height: "40px", padding: "0 10px", backgroundColor: "black", color: "white", display: "flex", alignItems: "center"}}>
           <p>Pesanan {index + 1}</p>
         </div>
         <div style={{display: "flex", flexDirection: "column", gap: "3px", padding: "10px"}}>

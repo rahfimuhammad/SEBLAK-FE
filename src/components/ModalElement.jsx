@@ -7,7 +7,7 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
     const isSmall = IsSmallScreen()
 
   return (
-        <ModalContent w={isSmall? "95%" : "550px"} maxW='98%'>
+        <ModalContent w={isSmall? "95%" : "400px"} maxW='98%'>
             <ModalHeader>{modalHeader}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

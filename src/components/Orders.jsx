@@ -4,6 +4,7 @@ import { Box, Modal, ModalOverlay, Button, useDisclosure } from '@chakra-ui/reac
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../hooks/useSmallScreen'
 import OrderlistsDetail from './OrderlistsDetail'
+import { WarningCircle } from 'phosphor-react'
 
 const Orders = () => {
 
@@ -50,18 +51,24 @@ const Orders = () => {
   const mapOrders = orders?.map((order) => {
 
     return (
-      <Box w={isSmall? '95%' : '550px'} bg='blue.100' p={10} key={order.id} display="flex" flexDirection="column" gap="7px" onClick={() => getOrderDetail(order.id)}>
-        <p>{order.client}</p>
+      <Box w={isSmall? '95%' : '550px'} bg='gray.100' borderRadius='10px' border='.5px solid gray' p={5} key={order.id} display="flex" flexDirection="column" gap="7px">
+       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+          <p><b>{order.client}</b></p>
+          <WarningCircle size={25} style={{cursor: "pointer"}} onClick={() => getOrderDetail(order.id)}/>
+       </div>
         <p>{formattedDate(order.createdAt)}</p>
         <p>{order?.orderlist?.length} Pesanan</p>
-        <Button colorScheme='teal'onClick={(e) => finishOrder(e, order.id, order.client)}>Finish Order</Button>
+        <div style={{display: "flex", gap: "5px"}}>
+          <Button bg='black' color='white' onClick={(e) => finishOrder(e, order.id, order.client)}>Adition</Button>
+          <Button bg='tomato' color='white' onClick={(e) => finishOrder(e, order.id, order.client)}>Cancel Order</Button>
+        </div>
       </Box>
     )
   })
 
   return (
     <>
-        <Box w='100%' overflow='auto' h='calc(100% - 24px)' display='flex' flexDirection='column' gap='30px' alignItems='center' onClick={() => console.log(orderId)}>
+        <Box w='100%' overflow='auto' h='100%' display='flex' flexDirection='column' gap='10px' alignItems='center' p='10px 0' onClick={() => console.log(orderId)}>
           <div>
             <Button onClick={() => setStatus("processed")}>Processed</Button>
             <Button onClick={() => setStatus("pending")}>Pending</Button>

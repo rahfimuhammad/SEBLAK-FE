@@ -48,17 +48,19 @@
     width: 80%;
     height: 100vh;
     background-color: white;
-    overflow-y: auto;
     position: relative;
 }
 
 .header {
     height: 60px;
     width: 100%;
+    padding: 0 15px;
     position: fixed;
     background-color: black;
     color: white;
     display: flex;
+    font-size: 20px;
+    font-weight: 600;
     align-items: center;
     z-index: 2;
 }
@@ -67,7 +69,8 @@
     width: 100%;
     position: absolute;
     height: fit-content;
-    min-height: calc(100vh - 80px);
+    height: calc(100vh - 60px);
+    overflow-y: auto;
     top: 60px;
     right: 0;
     display: flex;
@@ -131,6 +134,6 @@
         }
 
         .content-container {
-            min-height: calc(100vh - 120px);
+            height: calc(100vh - 120px);
         }
     }

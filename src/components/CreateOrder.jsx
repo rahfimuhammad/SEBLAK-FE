@@ -87,7 +87,7 @@ const CreateOrder = () => {
         &&
         <div style={{width: "100%", height: `${isSmall? "calc(100vh - 120px)" : "calc(100vh - 60px)"}`, display: "flex", justifyContent: "center", alignItems: "center"}}>
           <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
-            <img src={OrderImage} style={{width: "400px", height: "auto"}}/>
+            <img src={OrderImage} alt='order' style={{width: "250px", height: "auto"}}/>
             <Button onClick={onOpen}>Create New Order</Button>
           </div>
         </div>}
