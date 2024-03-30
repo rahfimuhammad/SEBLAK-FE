@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModalElement from './ModalElement'
 
-const OrderlistsDetail = ({ orderId, onClose }) => {
+const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
   const [orderDetail, setOrderDetail] = useState([])
 
@@ -21,7 +21,7 @@ const OrderlistsDetail = ({ orderId, onClose }) => {
 
   return (
     <>
-      <ModalElement onClose={onClose} modalHeader={"Order Detail"} action={"Finish Order"}>
+      <ModalElement onClose={onClose} modalHeader={"Order Detail"} action={action} actionFunction={() => actionFunction(orderId)}>
         {orderDetail?.map((or, i) => {
           return (
             <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>

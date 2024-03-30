@@ -37,11 +37,10 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         }
       };
 
-      const handleAddItemToOrderlist = async () => {
-          await createOrderAndAddItems(orderItem)
-          console.log(orderItem)
+      const handleAddItemToOrderlist = async (id) => {
+          await createOrderAndAddItems(id, orderItem)
           onClose()
-          // getOrderlists()
+          getOrderlists(orderId)
       }
 
     const mapProducts = products?.map((product, index) => {
@@ -64,7 +63,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       })
 
   return (
-    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={handleAddItemToOrderlist} modalHeader={"Add Item"}>
+    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={() => handleAddItemToOrderlist(orderId)} modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
       </List>

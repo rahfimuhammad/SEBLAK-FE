@@ -8,7 +8,7 @@ import "./appShell.css"
 
 const Appshell = () => {
 
-    const [activeTab, setActiveTab] = useState(null)
+    const [activeTab, setActiveTab] = useState(0)
 
     const tabs = [
         {tab: CreateOrder, icon: PlusCircle, title: "Create Order" },

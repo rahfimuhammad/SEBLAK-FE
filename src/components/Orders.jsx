@@ -7,11 +7,14 @@ import OrderlistsDetail from './OrderlistsDetail'
 import { WarningCircle } from 'phosphor-react'
 import NewOrderList from './NewOrderList'
 import { useOrder } from '../context/OrderProvider'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Orders = () => {
 
-  const { finishOrder } = useOrder()
+  const { finishOrder, deleteOrder } = useOrder()
   const [orders, setOrders] = useState([])
+  const [orderlists, setOrderlists] = useState([])
   const [orderId, setOrderId] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isAddition, setIsAddition] = useState(false)
@@ -26,6 +29,15 @@ const Orders = () => {
       setOrders(response.data?.data)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const getOrderlists = async () => {
+    try {
+      const orderlists = await axios.get(`http://localhost:5000/orderlist/${orderId}`)
+      setOrderlists(orderlists?.data?.data)
+    } catch (error) {
+      console.log(error.message)
     }
   }
 
@@ -44,18 +56,27 @@ const Orders = () => {
     onClose()
   }
 
-  const openAddition = async () => {
+  const openAddition = async (id) => {
     setIsAddition(true)
+    setOrderId(id)
     onOpen()
   }
 
   const closeAddition = async () => {
     setIsAddition(false)
+    setOrderlists([])
     onClose()
   }
 
-  const handleFinishOrder = (id, client) => {
-    finishOrder(id, client)
+  const handleFinishOrder = async (id) => {
+    await finishOrder(id)
+    getOrders()
+    onClose()
+  }
+
+  const handleDeleteOrder = async (id) => {
+    await deleteOrder(id)
+    getOrders()
   }
 
   const mapOrders = orders?.map((order) => {
@@ -69,8 +90,8 @@ const Orders = () => {
         <p>{formattedDate(order.createdAt)}</p>
         <p>{order?.orderlist?.length} Pesanan</p>
         <div style={{display: "flex", gap: "5px"}}>
-          <Button bg='black' color='white' onClick={() => openAddition()}>Addition</Button>
-          <Button bg='tomato' color='white' onClick={(e) => finishOrder(e, order.id, order.client)}>Cancel Order</Button>
+          <Button bg='black' color='white' onClick={() => openAddition(order.id)}>Addition</Button>
+          <Button bg='tomato' color='white' onClick={() => handleDeleteOrder(order.id)}>Cancel Order</Button>
         </div>
       </Box>
     )
@@ -78,7 +99,7 @@ const Orders = () => {
 
   return (
     <>
-        <Box w='100%' overflow='auto' h='100%' display='flex' flexDirection='column' gap='10px' alignItems='center' p='10px 0' onClick={() => console.log(orderId)}>
+        <Box w='100%' overflow='auto' h='100%' display='flex' flexDirection='column' gap='10px' alignItems='center' p='10px 0'>
           <div>
             <Button onClick={() => setStatus("processed")}>Processed</Button>
             <Button onClick={() => setStatus("pending")}>Pending</Button>
@@ -86,10 +107,11 @@ const Orders = () => {
           {mapOrders}
           <Modal isOpen={isOpen} onClose={isAddition? closeAddition : closeOrderDetail}>
             <ModalOverlay />
-            {isOrderDetail && <OrderlistsDetail orderId={orderId} onClose={closeOrderDetail}/>}
-            {isAddition &&<NewOrderList orderId={orderId} onClose={closeAddition}/>}
+            {isOrderDetail && <OrderlistsDetail orderId={orderId} onClose={closeOrderDetail} action={"Finish Order"} actionFunction={handleFinishOrder}/>}
+            {isAddition &&<NewOrderList orderId={orderId} onClose={closeAddition} getOrderlists={getOrderlists}/>}
           </Modal>
         </Box>
+        <ToastContainer/>
     </>
   )
 }

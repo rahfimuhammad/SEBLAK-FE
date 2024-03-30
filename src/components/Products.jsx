@@ -1,39 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Box, FormControl, Input, Button } from '@chakra-ui/react'
+import { Box, FormControl, Input, Button, Modal, ModalOverlay } from '@chakra-ui/react'
 import { formatCurrency } from "../function/formattedCurrency"
 import { useProduct } from '../context/ProductProvider'
+import { ToastContainer } from 'react-toastify'
+import { useDisclosure } from '@chakra-ui/react'
+import ModalElement from './ModalElement'
 
 const Products = () => {
 
   const [itemName, setItemName] = useState("")
   const [category, setCategory] = useState("")
   const [price, setPrice] = useState("")
-  const { getProducts, products } = useProduct()
+  const { getProducts, products, addProduct } = useProduct()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-       
-    try {
-        const response = await axios.post('http://localhost:5000/products', {
-          name: itemName,
-          category: category,
-          price: price
-        })
+  const handleAddProduct = async () => {
 
-        console.log(response?.data)
-        getProducts()
-
-    } catch (error) {
-        console.log(error)
-    } finally {
-      
+      await addProduct(itemName, category, price)
+      onClose() 
       setItemName("")
       setCategory("")
       setPrice("")
     }
-
-  }
 
   const mapProducts = products?.map((product, index) => {
       return (
@@ -50,16 +38,26 @@ const Products = () => {
 
 
   return (
-    <Box w='100%' display='flex' gap='20px'>
-        <FormControl w='40%' display='flex' flexDirection='column' gap='10px'>
-          <Input style={{color: "black"}} value={itemName} placeholder='Item name' type="text" onChange={(e) => setItemName(e.target.value) } />
-          <Input style={{color: "black"}} value={category} placeholder='Category' type="text" onChange={(e) => setCategory(e.target.value) } />
-          <Input style={{color: "black"}} value={price} placeholder='Item price' type="number" onChange={(e) => setPrice(parseInt(e.target.value)) } />
-          <Button onClick={(e) => handleSubmit(e)} type='submit' colorScheme='teal'>SAVE</Button>
-        </FormControl>
-        <Box w='60%'>
-          {mapProducts}
-        </Box>
+    <Box w='100%' display='flex' flexDirection='column' gap='10px' p='10px'>
+      <Box w='100%' display='flex' gap='5px'>
+          <Button onClick={onOpen}>Add Product</Button>
+          <Button>Delete Product</Button>
+          <Button>Edit Product</Button>
+      </Box>
+      <Box w='100%'>
+        {mapProducts}
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay/>
+        <ModalElement modalHeader="Add Product" action="Add Product" actionFunction={handleAddProduct}>
+          <FormControl w='100%' display='flex' flexDirection='column' gap='10px'>
+            <Input style={{color: "black"}} value={itemName} placeholder='Item name' type="text" onChange={(e) => setItemName(e.target.value) } />
+            <Input style={{color: "black"}} value={category} placeholder='Category' type="text" onChange={(e) => setCategory(e.target.value) } />
+            <Input style={{color: "black"}} value={price} placeholder='Item price' type="number" onChange={(e) => setPrice(parseInt(e.target.value)) } />
+          </FormControl>
+        </ModalElement>
+      </Modal>
+        <ToastContainer/>
     </Box>
   )
 }

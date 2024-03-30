@@ -17,9 +17,9 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                 <Button colorScheme='blue' mr={3} onClick={onClose}>
                     Close
                 </Button>
-                <Button variant='ghost' onClick={actionFunction}>
+                {action && <Button variant='ghost' onClick={actionFunction}>
                     {action}
-                </Button>
+                </Button>}
             </ModalFooter>
         </ModalContent>
   )

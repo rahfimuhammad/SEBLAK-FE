@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
+import { toast, Bounce } from "react-toastify";
 
 const OrderContext = React.createContext()
 
@@ -11,95 +12,76 @@ export const OrderProvider = ({children}) => {
 
     const [orderId, setOrderId] = useState()
     const [orderlistId, setOrderlistId] = useState()
-    const [orderlists, setOrderlists] = useState([])
+    const notifySuccess = (message) => toast.success(message, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+      });
+  const notifyError = (message) => toast.error(message, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+      });
 
     const createOrder = async (clientName) => {
         try {
           const response = await axios.post('http://localhost:5000/order', {
             client: clientName
-            }
-          )
-            setOrderId(response?.data?.data?.id)
+            })
+          setOrderId(response?.data?.data?.id)
+          notifySuccess(response?.data?.message)
         } catch (error) {
           console.log(error.message)
         }
       }
 
-    // const createOrderList = async (id) => {
-    //     try {
-    //       const response = await axios.post('http://localhost:5000/orderlist', {
-    //         orderId: id,
-    //         additional: "telor mata sapi",
-    //         spicylevelId: 4
-    //         }
-    //       )
-    //         setOrderlistId(response?.data?.data?.id)
-    //     } catch (error) {
-    //       console.log(error.message)
-    //     }
-    //   }
-
-    const processOrder = async (clientName, id) => {
+    const processOrder = async (id) => {
 
         try {
-          const response = await axios.patch(`http://localhost:5000/order/process/${id}`, {
-            client: clientName
-          })
+          const response = await axios.patch(`http://localhost:5000/order/process/${id}`)
+          notifySuccess(response?.data?.message)
+
         } catch (error) {
-          console.log(error.message)
+          notifyError(error.message)
+
         } finally {
           setOrderId("")
           setOrderlistId("")
-          setOrderlists([])
         }
       }
 
-      const finishOrder = async (id, client) => {
+    const finishOrder = async (id) => {
     
-        try {
-          const response = await axios.patch(`http://localhost:5000/order/finish/${id}`, {
-            client: client
-          })
-    
-          console.log(response)
-        } catch (error) {
-          console.log(error.message)
-        }
+      try {
+        const response = await axios.patch(`http://localhost:5000/order/finish/${id}`)
+        notifySuccess(response?.data?.message)
+
+      } catch (error) {
+        notifyError(error.message)
       }
+    }
 
-    //   const addItemToOrderlist = async (orderItem, orderlistId) => {
-          
-    //     try {
-    //       let responses = await Promise.all(
-    //         orderItem.map(async (item) => {
-    //           try {
-    //             const response = await axios.post('http://localhost:5000/orderlistitem', {
-    //               orderlistId: orderlistId,
-    //               productsId: item.productsId,
-    //               qty: item.qty
-    //               ,
-    //             });
-    //             return response.data;
-    //           } catch (error) {
-    //             console.error(error);
-    //             return { error: error.message };
-    //           }
-    //         })
-    //       );
-    //       console.log(responses);
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    // };
-
-    const createOrderAndAddItems = async (orderItem) => {
+    const createOrderAndAddItems = async (id, orderItem) => {
       try {
         const responseOrderList = await axios.post('http://localhost:5000/orderlist', {
-          orderId: orderId,
+          orderId: id,
           additional: "telor mata sapi",
           spicylevelId: 4
         });
         const orderlistId = responseOrderList.data?.data?.id;
+        notifySuccess(responseOrderList?.data?.message)
     
         const responsesOrderItem = await Promise.all(
           orderItem.map(async (item) => {
@@ -119,20 +101,20 @@ export const OrderProvider = ({children}) => {
     
         console.log(responsesOrderItem);
       } catch (error) {
-        console.error(error);
+        notifyError(error.message);
       }
     };
-    
 
-    const getOrderlists = async () => {
+    const deleteOrder = async (id) => {
+      try {
+        const response = await axios.delete(`http://localhost:5000/order/${id}`)
+        notifySuccess(response?.data?.message)
 
-        try {
-          const orderlists = await axios.get(`http://localhost:5000/orderlist/${orderId}`)
-          setOrderlists(orderlists?.data?.data)
-        } catch (error) {
-          console.log(error.message)
-        }
+      } catch (error) {
+        
+        notifyError(error.message) 
       }
+    }
 
     const value = {
         orderId,
@@ -140,13 +122,10 @@ export const OrderProvider = ({children}) => {
         orderlistId,
         setOrderlistId,
         createOrder,
-        // createOrderList,
         createOrderAndAddItems,
         processOrder,
-        // addItemToOrderlist,
-        orderlists,
-        getOrderlists,
-        finishOrder
+        finishOrder,
+        deleteOrder
 
     }
 
