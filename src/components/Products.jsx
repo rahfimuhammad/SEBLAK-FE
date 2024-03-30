@@ -2,23 +2,14 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Box, FormControl, Input, Button } from '@chakra-ui/react'
 import { formatCurrency } from "../function/formattedCurrency"
+import { useProduct } from '../context/ProductProvider'
 
 const Products = () => {
 
-  const [products, setProducts] = useState([])
   const [itemName, setItemName] = useState("")
   const [category, setCategory] = useState("")
   const [price, setPrice] = useState("")
-
-  const getProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/products')
-      setProducts(response?.data?.products)
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { getProducts, products } = useProduct()
 
   const handleSubmit = async (e) => {
     e.preventDefault()

@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
          NumberIncrementStepper, NumberInputField, Text } from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
 import ModalElement from './ModalElement'
+import { useOrder } from '../context/OrderProvider'
+import { useProduct } from '../context/ProductProvider'
 
-const NewOrderList = ({ orderlistId, onClose, getOrderlists }) => {
+const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
 
-    const [products, setProducts] = useState([])
     const [orderItem, setOrderItem] = useState([])
-
-    const getProducts = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/products')
-            setProducts(response?.data?.products)
-        
-        } catch (error) {
-          console.log(error)
-        }
-      }
+    const { createOrderAndAddItems } = useOrder()
+    const { products, getProducts } = useProduct()
 
     useEffect(() => {
-        getProducts()
+      getProducts()
     }, [])
 
     const handleQuantityChange = (quantity, product) => {
@@ -31,7 +23,7 @@ const NewOrderList = ({ orderlistId, onClose, getOrderlists }) => {
         if (qty > 0) {
     
           if (!orderItem.find(item => item.productsId === product.id)) {
-            setOrderItem([...orderItem, { orderlistId: orderlistId, productsId: product.id, qty: qty }]);
+            setOrderItem([...orderItem, { productsId: product.id, qty: qty }]);
           } else {
             setOrderItem(orderItem.map(item => {
               if (item.productsId === product.id) {
@@ -44,34 +36,13 @@ const NewOrderList = ({ orderlistId, onClose, getOrderlists }) => {
           setOrderItem(orderItem.filter(item => item.productsId !== product.id));
         }
       };
-    
-      const addItemToOrderlist = async (e) => {
-        e.preventDefault()
-          
-          try {
-            let responses = await Promise.all(
-              orderItem.map(async (item) => {
-                try {
-                  const response = await axios.post('http://localhost:5000/orderlistitem', {
-                    orderlistId: orderlistId,
-                    productsId: item.productsId,
-                    qty: item.qty
-                    ,
-                  });
-                  return response.data;
-                } catch (error) {
-                  console.error(error);
-                  return { error: error.message };
-                }
-              })
-            );
-              getOrderlists()
-              onClose()
-            console.log(responses);
-          } catch (error) {
-            console.error(error);
-          }
-      };
+
+      const handleAddItemToOrderlist = async () => {
+          await createOrderAndAddItems(orderItem)
+          console.log(orderItem)
+          onClose()
+          // getOrderlists()
+      }
 
     const mapProducts = products?.map((product, index) => {
         return (
@@ -93,7 +64,7 @@ const NewOrderList = ({ orderlistId, onClose, getOrderlists }) => {
       })
 
   return (
-    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={addItemToOrderlist} modalHeader={"Add Item"}>
+    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={handleAddItemToOrderlist} modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
       </List>

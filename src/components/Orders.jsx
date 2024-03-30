@@ -5,12 +5,17 @@ import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../hooks/useSmallScreen'
 import OrderlistsDetail from './OrderlistsDetail'
 import { WarningCircle } from 'phosphor-react'
+import NewOrderList from './NewOrderList'
+import { useOrder } from '../context/OrderProvider'
 
 const Orders = () => {
 
+  const { finishOrder } = useOrder()
   const [orders, setOrders] = useState([])
   const [orderId, setOrderId] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isAddition, setIsAddition] = useState(false)
+  const [isOrderDetail, setIsOrderDetail] = useState(false)
   const  isSmall  = IsSmallScreen()
   const [status, setStatus] = useState("processed")
 
@@ -24,28 +29,33 @@ const Orders = () => {
     }
   }
 
-  const finishOrder = async (e, orderId, client) => {
-    e.stopPropagation()
-
-    try {
-      const response = await axios.patch(`http://localhost:5000/order/finish/${orderId}`, {
-        client: client
-      })
-
-      console.log(response)
-      getOrders()
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   useEffect(() => {
     getOrders()
   }, [status, setStatus])
 
-  const getOrderDetail = (orderDetail) => {
+  const openOrderDetail = (orderDetail) => {
+    setIsOrderDetail(true)
     setOrderId(orderDetail)
     onOpen()
+  }
+
+  const closeOrderDetail = async () => {
+    setIsOrderDetail(false)
+    onClose()
+  }
+
+  const openAddition = async () => {
+    setIsAddition(true)
+    onOpen()
+  }
+
+  const closeAddition = async () => {
+    setIsAddition(false)
+    onClose()
+  }
+
+  const handleFinishOrder = (id, client) => {
+    finishOrder(id, client)
   }
 
   const mapOrders = orders?.map((order) => {
@@ -54,12 +64,12 @@ const Orders = () => {
       <Box w={isSmall? '95%' : '550px'} bg='gray.100' borderRadius='10px' border='.5px solid gray' p={5} key={order.id} display="flex" flexDirection="column" gap="7px">
        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <p><b>{order.client}</b></p>
-          <WarningCircle size={25} style={{cursor: "pointer"}} onClick={() => getOrderDetail(order.id)}/>
+          <WarningCircle size={25} style={{cursor: "pointer"}} onClick={() => openOrderDetail(order.id)}/>
        </div>
         <p>{formattedDate(order.createdAt)}</p>
         <p>{order?.orderlist?.length} Pesanan</p>
         <div style={{display: "flex", gap: "5px"}}>
-          <Button bg='black' color='white' onClick={(e) => finishOrder(e, order.id, order.client)}>Adition</Button>
+          <Button bg='black' color='white' onClick={() => openAddition()}>Addition</Button>
           <Button bg='tomato' color='white' onClick={(e) => finishOrder(e, order.id, order.client)}>Cancel Order</Button>
         </div>
       </Box>
@@ -74,9 +84,10 @@ const Orders = () => {
             <Button onClick={() => setStatus("pending")}>Pending</Button>
           </div>
           {mapOrders}
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={isAddition? closeAddition : closeOrderDetail}>
             <ModalOverlay />
-            <OrderlistsDetail orderId={orderId} onClose={onClose}/>
+            {isOrderDetail && <OrderlistsDetail orderId={orderId} onClose={closeOrderDetail}/>}
+            {isAddition &&<NewOrderList orderId={orderId} onClose={closeAddition}/>}
           </Modal>
         </Box>
     </>

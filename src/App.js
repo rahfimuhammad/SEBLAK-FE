@@ -1,10 +1,16 @@
 import React from 'react';
 import AppShell from './Layout/AppShell';
+import { OrderProvider } from './context/OrderProvider';
+import { ProductProvider } from './context/ProductProvider';
 function App() {
 
   return (
     <>
-      <AppShell/>
+    <ProductProvider>
+      <OrderProvider>
+        <AppShell/>
+      </OrderProvider>
+    </ProductProvider>
     </>
   );
 }
