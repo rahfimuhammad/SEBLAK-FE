@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useOrder } from '../context/OrderProvider'
 import { useDisclosure } from '@chakra-ui/react'
 import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
-import { IsSmallScreen } from '../hooks/useSmallScreen'
+import { IsSmallScreen } from '../function/detectSmallScreen'
 import { PlusCircle } from 'phosphor-react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,11 +11,12 @@ import OrderImage from "../assets/OrderImage.png"
 import NewOrder from './NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
+import Spinner from './Spinner'
 
 
 const CreateOrder = () => {
 
-  const { createOrder, orderId, processOrder } = useOrder()
+  const { createOrder, orderId, processOrder, isLoading } = useOrder()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [clientName, setClientName] = useState("")
   const [orderlists, setOrderlists] = useState([])
@@ -30,8 +31,8 @@ const CreateOrder = () => {
     }
   }
 
-  const handleCreateOrder = () => {
-    createOrder(clientName)
+  const handleCreateOrder = async () => {
+    await createOrder(clientName)
     onClose()
   }
 
@@ -90,7 +91,7 @@ const CreateOrder = () => {
                          height: "auto"}}
             />
             <Button onClick={onOpen}>
-              Create New Order
+              Create Order
             </Button>
           </div>
         </div>}

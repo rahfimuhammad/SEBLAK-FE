@@ -27,6 +27,7 @@ const Products = () => {
       return (
         <Box w='100%' display='flex' justifyContent='space-between' key={index}>
           <p>{product.name}</p>
+          {/* <p>{product.category}</p> */}
           <p>{formatCurrency(product.price)}</p>
         </Box>
       )

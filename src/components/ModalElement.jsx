@@ -1,10 +1,13 @@
 import React from 'react'
 import { ModalContent, ModalCloseButton, ModalHeader, ModalFooter, ModalBody, Button } from '@chakra-ui/react'
-import { IsSmallScreen } from '../hooks/useSmallScreen'
+import { IsSmallScreen } from '../function/detectSmallScreen'
+import Spinner from './Spinner'
+import { useOrder } from '../context/OrderProvider'
 
 const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }) => {
 
     const isSmall = IsSmallScreen()
+    const { isLoading } = useOrder
 
   return (
         <ModalContent w={isSmall? "95%" : "400px"} 
@@ -22,11 +25,11 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                 >
                     Close
                 </Button>
-                {action && <Button variant='ghost' 
+                {action && <button 
                                 onClick={actionFunction}
                 >
-                    {action}
-                </Button>}
+                    {isLoading? <Spinner size={20}/> : action}
+                </button>}
             </ModalFooter>
         </ModalContent>
   )

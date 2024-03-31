@@ -3,24 +3,29 @@ import axios from 'axios'
 import { Box } from '@chakra-ui/react'
 import { WarningCircle } from 'phosphor-react'
 import { formattedDate } from '../function/formattedDate'
-import { IsSmallScreen } from '../hooks/useSmallScreen'
+import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useDisclosure } from '@chakra-ui/react'
 import { Modal, ModalOverlay } from '@chakra-ui/react'
 import OrderlistsDetail from './OrderlistsDetail'
+import Spinner from './Spinner'
 
 const Transactions = () => {
 
   const [finishedOrder, setFinishedOrder] = useState([])
   const [orderId, setOrderId] = useState()
+  const [loading, setLoading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const isSmall = IsSmallScreen()
 
   const getFinishedOrder = async () => {
     try {
+      setLoading(true)
       const res = await axios.get('http://localhost:5000/order/finishedorder/finished')
       setFinishedOrder(res?.data?.data)
     } catch (error) {
       console.log(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -42,6 +47,12 @@ const Transactions = () => {
          alignItems='center' 
          p='10px 0'
     >
+      {
+        loading && 
+          <div style={{width: '100%', height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <Spinner size={32}/>
+          </div>
+      }
       {finishedOrder?.map((value) => (
         <Box w={isSmall? '95%' : '550px'} 
              bg='gray.100' 

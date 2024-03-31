@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Box, Modal, ModalOverlay, Button, useDisclosure } from '@chakra-ui/react'
 import { formattedDate } from '../function/formattedDate'
-import { IsSmallScreen } from '../hooks/useSmallScreen'
+import { IsSmallScreen } from '../function/detectSmallScreen'
 import OrderlistsDetail from './OrderlistsDetail'
 import { WarningCircle } from 'phosphor-react'
 import NewOrderList from './NewOrderList'
 import { useOrder } from '../context/OrderProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from './Spinner'
 
 const Orders = () => {
 
@@ -21,14 +22,18 @@ const Orders = () => {
   const [isOrderDetail, setIsOrderDetail] = useState(false)
   const  isSmall  = IsSmallScreen()
   const [status, setStatus] = useState("processed")
+  const [loading, setLoading] = useState(false)
 
   const getOrders = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(`http://localhost:5000/order/finishedorder/${status}`)
 
       setOrders(response.data?.data)
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -145,6 +150,12 @@ const Orders = () => {
               Pending
             </Button>
           </Box>
+          {
+          loading && 
+            <div style={{width: '100%', height: "100%", display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", top: "0", right: "0"}}>
+              <Spinner size={32}/>
+            </div>
+          }
           {mapOrders}
           <Modal isOpen={isOpen} 
                  onClose={isAddition? closeAddition : closeOrderDetail}

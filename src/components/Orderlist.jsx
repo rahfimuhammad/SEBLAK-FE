@@ -1,5 +1,5 @@
 import React from 'react'
-import { IsSmallScreen } from '../hooks/useSmallScreen'
+import { IsSmallScreen } from '../function/detectSmallScreen'
 import { formatCurrency } from '../function/formattedCurrency'
 
 const Orderlist = ({ orderlist, index }) => {

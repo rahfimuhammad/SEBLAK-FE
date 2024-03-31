@@ -12,6 +12,7 @@ export const OrderProvider = ({children}) => {
 
     const [orderId, setOrderId] = useState()
     const [orderlistId, setOrderlistId] = useState()
+    const [isLoading, setIsLoading] = useState(false)
     const notifySuccess = (message) => toast.success(message, {
       position: "top-center",
       autoClose: 1000,
@@ -37,14 +38,17 @@ export const OrderProvider = ({children}) => {
 
     const createOrder = async (clientName) => {
         try {
+          setIsLoading(true)
           const response = await axios.post('http://localhost:5000/order', {
             client: clientName
             })
+          console.log(isLoading)
           setOrderId(response?.data?.data?.id)
           notifySuccess(response?.data?.message)
+          setIsLoading(false)
         } catch (error) {
           console.log(error.message)
-        }
+        } 
       }
 
     const processOrder = async (id) => {
@@ -80,6 +84,7 @@ export const OrderProvider = ({children}) => {
           additional: "telor mata sapi",
           spicylevelId: 4
         });
+        console.log(isLoading)
         const orderlistId = responseOrderList.data?.data?.id;
         notifySuccess(responseOrderList?.data?.message)
     
@@ -125,7 +130,8 @@ export const OrderProvider = ({children}) => {
         createOrderAndAddItems,
         processOrder,
         finishOrder,
-        deleteOrder
+        deleteOrder,
+        isLoading
 
     }
 
