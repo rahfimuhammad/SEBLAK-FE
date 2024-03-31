@@ -21,23 +21,35 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
   return (
     <>
-      <ModalElement onClose={onClose} modalHeader={"Order Detail"} action={action} actionFunction={() => actionFunction(orderId)}>
+      <ModalElement onClose={onClose} 
+                    modalHeader={"Order Detail"} 
+                    action={action} 
+                    actionFunction={() => actionFunction(orderId)}
+      >
         {orderDetail?.map((or, i) => {
           return (
-            <div key={i} style={{backgroundColor: "white", borderRadius: "10px", padding: "10px"}}>
+            <div key={or?.id} 
+                 style={{backgroundColor: "white", 
+                         borderRadius: "10px", 
+                         padding: "10px"}}
+            >
               <h5>Pesanan {i + 1}</h5>
               <p>Level {or?.spicylevel?.level}</p>
               <p>Ket: {or?.additional}</p>
               {
                 or?.orderlistitem?.map((o, i) => {
                   return (
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div style={{display: "flex", 
+                                 justifyContent: "space-between"}}
+                    >
                       <p>{o.product.name}</p>
-                      <div style={{display: "flex", gap: "10px"}}>
-                      <p>{o.qty}</p>
-                      x
-                      <p>{o.product.price}</p>
-                    </div>
+                      <div style={{display: "flex", 
+                                   gap: "10px"}}
+                      >
+                        <p>{o.qty}</p>
+                        x
+                        <p>{o.product.price}</p>
+                      </div>
                     </div>
                   )
                 }) 

@@ -82,16 +82,42 @@ const Orders = () => {
   const mapOrders = orders?.map((order) => {
 
     return (
-      <Box w={isSmall? '95%' : '550px'} bg='gray.100' borderRadius='10px' border='.5px solid gray' p={5} key={order.id} display="flex" flexDirection="column" gap="7px">
-       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+      <Box w={isSmall? '100%' : '550px'} 
+           bg='gray.100' 
+           borderRadius='10px' 
+           border='.5px solid gray' 
+           p={5} key={order.id} 
+           display="flex" 
+           flexDirection="column" 
+           gap="7px"
+      >
+        <div style={{display: "flex", 
+                     justifyContent: "space-between", 
+                     alignItems: "center"}}
+        >
           <p><b>{order.client}</b></p>
-          <WarningCircle size={25} style={{cursor: "pointer"}} onClick={() => openOrderDetail(order.id)}/>
-       </div>
+          <WarningCircle size={25} 
+                         style={{cursor: "pointer"}} 
+                         onClick={() => openOrderDetail(order.id)}
+          />
+        </div>
         <p>{formattedDate(order.createdAt)}</p>
         <p>{order?.orderlist?.length} Pesanan</p>
-        <div style={{display: "flex", gap: "5px"}}>
-          <Button bg='black' color='white' onClick={() => openAddition(order.id)}>Addition</Button>
-          <Button bg='tomato' color='white' onClick={() => handleDeleteOrder(order.id)}>Cancel Order</Button>
+        <div style={{display: "flex", 
+                     gap: "5px"}}
+        >
+          <Button bg='black' 
+                  color='white' 
+                  onClick={() => openAddition(order.id)}
+          >
+            Addition
+          </Button>
+          <Button bg='tomato' 
+                  color='white' 
+                  onClick={() => handleDeleteOrder(order.id)}
+          >
+            Cancel Order
+          </Button>
         </div>
       </Box>
     )
@@ -99,16 +125,43 @@ const Orders = () => {
 
   return (
     <>
-        <Box w='100%' overflow='auto' h='100%' display='flex' flexDirection='column' gap='10px' alignItems='center' p='10px 0'>
-          <div>
-            <Button onClick={() => setStatus("processed")}>Processed</Button>
-            <Button onClick={() => setStatus("pending")}>Pending</Button>
-          </div>
+        <Box w='100%' 
+             overflow='auto' 
+             h='100%' 
+             display='flex' 
+             flexDirection='column' 
+             gap='10px' 
+             alignItems='center' 
+             p='10px'
+        >
+          <Box w='100%' 
+               display='flex' 
+               gap='5px'
+          >
+            <Button onClick={() => setStatus("processed")}>
+              Processed
+            </Button>
+            <Button onClick={() => setStatus("pending")}>
+              Pending
+            </Button>
+          </Box>
           {mapOrders}
-          <Modal isOpen={isOpen} onClose={isAddition? closeAddition : closeOrderDetail}>
+          <Modal isOpen={isOpen} 
+                 onClose={isAddition? closeAddition : closeOrderDetail}
+          >
             <ModalOverlay />
-            {isOrderDetail && <OrderlistsDetail orderId={orderId} onClose={closeOrderDetail} action={"Finish Order"} actionFunction={handleFinishOrder}/>}
-            {isAddition &&<NewOrderList orderId={orderId} onClose={closeAddition} getOrderlists={getOrderlists}/>}
+            {isOrderDetail && 
+              <OrderlistsDetail orderId={orderId} 
+                                                onClose={closeOrderDetail} 
+                                                action={"Finish Order"} 
+                                                actionFunction={handleFinishOrder}
+              />
+            }
+            {isAddition &&
+              <NewOrderList orderId={orderId} 
+                            onClose={closeAddition} 
+                            getOrderlists={getOrderlists}
+              />}
           </Modal>
         </Box>
         <ToastContainer/>

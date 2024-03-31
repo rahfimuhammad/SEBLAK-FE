@@ -45,13 +45,24 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
 
     const mapProducts = products?.map((product, index) => {
         return (
-          <ListItem display='flex' gap='5px' alignItems='center' key={index}>
+          <ListItem display='flex' 
+                    gap='5px' 
+                    alignItems='center' 
+                    key={index}
+          >
             <ShoppingBag size={32}/>
-            <Box w='100%' display='flex' justifyContent='space-between'>
+            <Box w='100%' 
+                 display='flex' 
+                 justifyContent='space-between'
+            >
               <Text>{product.name}</Text>
               <Text>{product.price}</Text>
             </Box>
-            <NumberInput defaultValue={0} min={0} max={20} w='100px' onChange={(valueString) => handleQuantityChange(valueString, product)}>
+            <NumberInput defaultValue={0} 
+                         min={0} 
+                         max={20} w='100px' 
+                         onChange={(valueString) => handleQuantityChange(valueString, product)}
+            >
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -63,7 +74,10 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       })
 
   return (
-    <ModalElement action={"Add Item"} onClose={onClose} actionFunction={() => handleAddItemToOrderlist(orderId)} modalHeader={"Add Item"}>
+    <ModalElement action={"Add Item"} 
+                  onClose={onClose} 
+                  actionFunction={() => handleAddItemToOrderlist(orderId)} 
+                  modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
       </List>
