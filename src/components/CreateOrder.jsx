@@ -11,12 +11,10 @@ import OrderImage from "../assets/OrderImage.png"
 import NewOrder from './NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
-import Spinner from './Spinner'
-
 
 const CreateOrder = () => {
 
-  const { createOrder, orderId, processOrder, isLoading } = useOrder()
+  const { orderId, processOrder, isLoading } = useOrder()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [clientName, setClientName] = useState("")
   const [orderlists, setOrderlists] = useState([])
@@ -31,11 +29,6 @@ const CreateOrder = () => {
     }
   }
 
-  const handleCreateOrder = async () => {
-    await createOrder(clientName)
-    onClose()
-  }
-
   const handleCreateOrderlist = () => {
     onOpen()
   }
@@ -46,80 +39,101 @@ const CreateOrder = () => {
   }
 
   return (
-      <>
+      <Box 
+        w='100%' 
+        // overflow='auto' 
+        // h='100%' 
+        display='flex' 
+        flexDirection='column' 
+        gap='10px' 
+        alignItems='center' 
+        p='10px'
+      >
         {orderId && 
-        <Box bg='gray.200' 
-             w={isSmall? '95%' : '550px'} 
-             mt='10px' mb='10px' 
-             h='200px' 
-             borderRadius='10px' 
-             display='flex' 
-             justifyContent='center' 
-             alignItems='center'
-             onClick={handleCreateOrderlist}>
-          <PlusCircle size={40} 
-                      color='#5f656e'
+        <Box 
+          bg='gray.200' 
+          w={isSmall? '100%' : '550px'} 
+          h='200px' 
+          borderRadius='10px' 
+          display='flex' 
+          justifyContent='center' 
+          alignItems='center'
+          onClick={handleCreateOrderlist}>
+          <PlusCircle 
+                  size={40} 
+                  color='#5f656e'
           />
         </Box>
         }
-        <div style={{display: "flex", 
-                     flexDirection: "column", 
-                     gap: "10px", 
-                     width: "100%", 
-                     alignItems: "center"}}
+        <div 
+          style={{display: "flex", 
+                  flexDirection: "column", 
+                  gap: "10px", 
+                  width: "100%",
+                  height: "fit-content", 
+                  alignItems: "center"}}
         >
           {orderlists.map((orderlist, index) => (
-              <Orderlist key={index} orderlist={orderlist} index={index}/>
+              <Orderlist 
+                      key={index} 
+                      orderlist={orderlist} 
+                      index={index}/>
           ))}
         </div>
         {!orderId 
         &&
-        <div style={{width: "100%", 
-                     height: `${isSmall? "calc(100vh - 120px)" : "calc(100vh - 60px)"}`, 
-                     display: "flex", 
-                     justifyContent: "center", 
-                     alignItems: "center"}}
+        <div 
+          style={{width: "calc(100% - 20px)", 
+                  height: `${isSmall? "calc(100vh - 160px)" : "calc(100vh - 60px)"}`, 
+                  display: "flex", 
+                  justifyContent: "center", 
+                  alignItems: "center"}}
         >
-          <div style={{display: "flex", 
-                       flexDirection: "column", 
-                       gap: "10px", 
-                       alignItems: "center"}}
+          <div 
+            style={{display: "flex", 
+                    flexDirection: "column", 
+                    gap: "10px", 
+                    alignItems: "center"}}
           >
-            <img src={OrderImage} 
-                 alt='order' 
-                 style={{width: "250px", 
-                         height: "auto"}}
+            <img 
+              src={OrderImage} 
+              alt='order' 
+              style={{width: "250px", 
+                      height: "auto"}}
             />
             <Button onClick={onOpen}>
               Create Order
             </Button>
           </div>
         </div>}
-        <Modal isOpen={isOpen} 
-               onClose={onClose}>
+        <Modal 
+            isOpen={isOpen} 
+            onClose={onClose}>
           <ModalOverlay />
               {orderId
-              ? <NewOrderList orderId={orderId} 
-                              onClose={onClose} 
-                              getOrderlists={getOrderlists} /> 
-              : <NewOrder     clientName={clientName} 
-                              setClientName={setClientName} 
-                              onClose={onClose} 
-                              actionFunction={handleCreateOrder}/>
+              ? <NewOrderList 
+                          orderId={orderId} 
+                          onClose={onClose} 
+                          getOrderlists={getOrderlists} /> 
+              : <NewOrder  
+                      setClientName={setClientName} 
+                      onClose={onClose} 
+                      data={clientName}/>
               }
         </Modal>
         {orderlists.length
-        ? <Button colorScheme='teal' 
-                  mt='10px' 
-                  mb='10px' 
-                  onClick={handleProcessOrder}
+        ? <Button 
+              colorScheme='teal' 
+              mt='10px' 
+              mb='10px' 
+              onClick={handleProcessOrder}
           >
             Save Order
           </Button> 
           : null
         }
         <ToastContainer/>
-      </>
+      </Box>
   )
 }
 

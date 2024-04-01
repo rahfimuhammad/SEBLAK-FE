@@ -21,7 +21,7 @@ export const OrderProvider = ({children}) => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "dark",
+      theme: "light",
       transition: Bounce,
       });
   const notifyError = (message) => toast.error(message, {
@@ -32,13 +32,14 @@ export const OrderProvider = ({children}) => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "dark",
+      theme: "light",
       transition: Bounce,
       });
 
     const createOrder = async (clientName) => {
         try {
           setIsLoading(true)
+          console.log(isLoading)
           const response = await axios.post('http://localhost:5000/order', {
             client: clientName
             })

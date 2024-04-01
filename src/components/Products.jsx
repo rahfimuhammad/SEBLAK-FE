@@ -25,7 +25,12 @@ const Products = () => {
 
   const mapProducts = products?.map((product, index) => {
       return (
-        <Box w='100%' display='flex' justifyContent='space-between' key={index}>
+        <Box 
+          w='100%' 
+          display='flex' 
+          justifyContent='space-between' 
+          key={index}
+        >
           <p>{product.name}</p>
           {/* <p>{product.category}</p> */}
           <p>{formatCurrency(product.price)}</p>
@@ -39,15 +44,17 @@ const Products = () => {
 
 
   return (
-    <Box w='100%' 
-         display='flex' 
-         flexDirection='column' 
-         gap='10px' 
-         p='10px'
+    <Box 
+      w='100%' 
+      display='flex' 
+      flexDirection='column' 
+      gap='10px' 
+      p='10px'
     >
-      <Box w='100%' 
-           display='flex' 
-           gap='5px'
+      <Box 
+        w='100%' 
+        display='flex' 
+        gap='5px'
       >
           <Button onClick={onOpen}>Add Product</Button>
           <Button>Delete Product</Button>
@@ -56,34 +63,40 @@ const Products = () => {
       <Box w='100%'>
         {mapProducts}
       </Box>
-      <Modal isOpen={isOpen} 
-             onClose={onClose}>
+      <Modal 
+          isOpen={isOpen} 
+          onClose={onClose}>
         <ModalOverlay/>
-        <ModalElement modalHeader="Add Product" 
-                      action="Add Product" 
-                      actionFunction={handleAddProduct}
+        <ModalElement 
+                  modalHeader="Add Product" 
+                  action="Add Product" 
+                  actionFunction={handleAddProduct}
         >
-          <FormControl w='100%' 
-                       display='flex' 
-                       flexDirection='column' gap='10px'
+          <FormControl 
+                    w='100%' 
+                    display='flex' 
+                    flexDirection='column' gap='10px'
           >
-            <Input style={{color: "black"}} 
-                   value={itemName} 
-                   placeholder='Item name' 
-                   type="text" 
-                   onChange={(e) => setItemName(e.target.value) } 
+            <Input 
+                style={{color: "black"}} 
+                value={itemName} 
+                placeholder='Item name' 
+                type="text" 
+                onChange={(e) => setItemName(e.target.value) } 
             />
-            <Input style={{color: "black"}} 
-                   value={category} 
-                   placeholder='Category' 
-                   type="text" 
-                   onChange={(e) => setCategory(e.target.value) } 
+            <Input 
+                style={{color: "black"}} 
+                value={category} 
+                placeholder='Category' 
+                type="text" 
+                onChange={(e) => setCategory(e.target.value) } 
             />
-            <Input style={{color: "black"}} 
-                   value={price} 
-                   placeholder='Item price' 
-                   type="number" 
-                   onChange={(e) => setPrice(parseInt(e.target.value)) } 
+            <Input 
+                color='black' 
+                value={price} 
+                placeholder='Item price' 
+                type="number" 
+                onChange={(e) => setPrice(parseInt(e.target.value)) } 
             />
           </FormControl>
         </ModalElement>

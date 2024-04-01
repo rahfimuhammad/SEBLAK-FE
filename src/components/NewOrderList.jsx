@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
-         NumberIncrementStepper, NumberInputField, Text } from '@chakra-ui/react'
+         NumberIncrementStepper, NumberInputField, Text, FormControl, Input } from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
 import ModalElement from './ModalElement'
 import { useOrder } from '../context/OrderProvider'
@@ -45,23 +45,26 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
 
     const mapProducts = products?.map((product, index) => {
         return (
-          <ListItem display='flex' 
-                    gap='5px' 
-                    alignItems='center' 
-                    key={index}
+          <ListItem 
+                display='flex' 
+                gap='5px' 
+                alignItems='center' 
+                key={index}
           >
             <ShoppingBag size={32}/>
-            <Box w='100%' 
-                 display='flex' 
-                 justifyContent='space-between'
+            <Box 
+              w='100%' 
+              display='flex' 
+              justifyContent='space-between'
             >
               <Text>{product.name}</Text>
               <Text>{product.price}</Text>
             </Box>
-            <NumberInput defaultValue={0} 
-                         min={0} 
-                         max={20} w='100px' 
-                         onChange={(valueString) => handleQuantityChange(valueString, product)}
+            <NumberInput 
+                    defaultValue={0} 
+                    min={0} 
+                    max={20} w='100px' 
+                    onChange={(valueString) => handleQuantityChange(valueString, product)}
             >
               <NumberInputField />
               <NumberInputStepper>
@@ -74,13 +77,49 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       })
 
   return (
-    <ModalElement action={"Add Item"} 
-                  onClose={onClose} 
-                  actionFunction={() => handleAddItemToOrderlist(orderId)} 
-                  modalHeader={"Add Item"}>
+    <ModalElement 
+              action={"Add Item"} 
+              onClose={onClose} 
+              actionFunction={() => handleAddItemToOrderlist(orderId)} 
+              modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
       </List>
+      <FormControl
+              mt='10px'
+              display='flex'
+              flexDirection='column'
+              gap='5px'  
+      >
+        <Input
+          placeholder='Notes'/>
+        <Box
+          display='flex'
+          gap='10px'
+          alignItems='center'
+        >
+          <NumberInput 
+                    defaultValue={0} 
+                    min={1} 
+                    max={5} 
+                    w='100px' 
+                    onChange={() => {}}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+          <Text
+              fontWeight='bold'
+          >
+            Spicy Level
+          </Text>
+        </Box>
+        
+      </FormControl>
+
     </ModalElement>
   )
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModalElement from './ModalElement'
+import { WarningCircle, Fire } from 'phosphor-react'
+import { Box } from '@chakra-ui/react'
 
 const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
@@ -28,23 +30,27 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
       >
         {orderDetail?.map((or, i) => {
           return (
-            <div key={or?.id} 
-                 style={{backgroundColor: "white", 
-                         borderRadius: "10px", 
-                         padding: "10px"}}
-            >
-              <h5>Pesanan {i + 1}</h5>
-              <p>Level {or?.spicylevel?.level}</p>
-              <p>Ket: {or?.additional}</p>
+            <div 
+              key={or?.id} 
+              style={{backgroundColor: "white", 
+                      borderRadius: "10px", 
+                      padding: "10px"}}
+            > 
+              <div>
+                <h5>Pesanan {i + 1}</h5>
+              </div>
               {
                 or?.orderlistitem?.map((o, i) => {
                   return (
-                    <div style={{display: "flex", 
-                                 justifyContent: "space-between"}}
+                    <div
+                      key={i} 
+                      style={{display: "flex", 
+                              justifyContent: "space-between"}}
                     >
                       <p>{o.product.name}</p>
-                      <div style={{display: "flex", 
-                                   gap: "10px"}}
+                      <div 
+                        style={{display: "flex", 
+                                gap: "10px"}}
                       >
                         <p>{o.qty}</p>
                         x
@@ -54,6 +60,31 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                   )
                 }) 
               }
+              <Box
+                mt='5px'
+                display='flex'
+                justifyContent='space-between'
+              >
+                <p><b>Subtotal: </b></p>
+                <p>Rp. 12.500,00</p>
+              </Box>
+              <Box
+                mt='5px'
+                display='flex'
+                gap='5px'
+                alignItems='center' 
+              >
+                <Fire size={20}/>
+                <p>Level {or?.spicylevel?.level}</p>
+              </Box>
+              <Box
+                display='flex'
+                gap='5px'
+                alignItems='center' 
+              >
+                <WarningCircle size={20}/>
+                <p>{or?.additional}</p>
+              </Box>
             </div>
           )
         })}

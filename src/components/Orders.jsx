@@ -87,38 +87,40 @@ const Orders = () => {
   const mapOrders = orders?.map((order) => {
 
     return (
-      <Box w={isSmall? '100%' : '550px'} 
-           bg='gray.100' 
-           borderRadius='10px' 
-           border='.5px solid gray' 
-           p={5} key={order.id} 
-           display="flex" 
-           flexDirection="column" 
-           gap="7px"
+      <Box 
+        w={isSmall? '100%' : '550px'} 
+        bg='gray.100' 
+        borderRadius='10px' 
+        border='.5px solid gray' 
+        p={5} key={order.id} 
+        display="flex" 
+        flexDirection="column" 
+        gap="7px"
       >
-        <div style={{display: "flex", 
-                     justifyContent: "space-between", 
-                     alignItems: "center"}}
+        <div 
+          style={{display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: "center"}}
         >
           <p><b>{order.client}</b></p>
-          <WarningCircle size={25} 
-                         style={{cursor: "pointer"}} 
-                         onClick={() => openOrderDetail(order.id)}
+          <WarningCircle 
+                      size={25} 
+                      style={{cursor: "pointer"}} 
+                      onClick={() => openOrderDetail(order.id)}
           />
         </div>
         <p>{formattedDate(order.createdAt)}</p>
         <p>{order?.orderlist?.length} Pesanan</p>
-        <div style={{display: "flex", 
-                     gap: "5px"}}
+        <div 
+          style={{display: "flex", 
+                  gap: "5px"}}
         >
-          <Button bg='black' 
-                  color='white' 
+          <Button colorScheme='green' 
                   onClick={() => openAddition(order.id)}
           >
             Addition
           </Button>
-          <Button bg='tomato' 
-                  color='white' 
+          <Button colorScheme='red' 
                   onClick={() => handleDeleteOrder(order.id)}
           >
             Cancel Order
@@ -129,19 +131,20 @@ const Orders = () => {
   })
 
   return (
-    <>
-        <Box w='100%' 
-             overflow='auto' 
-             h='100%' 
-             display='flex' 
-             flexDirection='column' 
-             gap='10px' 
-             alignItems='center' 
-             p='10px'
+        <Box
+          w='100%' 
+          overflow='auto' 
+          h='100%' 
+          display='flex' 
+          flexDirection='column' 
+          gap='10px' 
+          alignItems='center' 
+          p='10px'
         >
-          <Box w='100%' 
-               display='flex' 
-               gap='5px'
+          <Box 
+            w='100%' 
+            display='flex' 
+            gap='5px'
           >
             <Button onClick={() => setStatus("processed")}>
               Processed
@@ -152,31 +155,45 @@ const Orders = () => {
           </Box>
           {
           loading && 
-            <div style={{width: '100%', height: "100%", display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", top: "0", right: "0"}}>
+            <div
+              style={{width: '100%', 
+                      height: "100%", 
+                      display: "flex", 
+                      justifyContent: "center",
+                      zIndex: "10", 
+                      backgroundColor: "rgba(0, 0, 0, 0.3)",
+                      alignItems: "center", 
+                      position: "absolute", 
+                      top: "0", 
+                      right: "0"}}
+            >
               <Spinner size={32}/>
             </div>
           }
           {mapOrders}
-          <Modal isOpen={isOpen} 
-                 onClose={isAddition? closeAddition : closeOrderDetail}
+          <Modal 
+              isOpen={isOpen} 
+              onClose={isAddition? closeAddition : closeOrderDetail}
           >
             <ModalOverlay />
             {isOrderDetail && 
-              <OrderlistsDetail orderId={orderId} 
-                                                onClose={closeOrderDetail} 
-                                                action={"Finish Order"} 
-                                                actionFunction={handleFinishOrder}
+              <OrderlistsDetail 
+                            orderId={orderId} 
+                            onClose={closeOrderDetail} 
+                            action={"Finish Order"} 
+                            actionFunction={handleFinishOrder}
               />
             }
             {isAddition &&
-              <NewOrderList orderId={orderId} 
-                            onClose={closeAddition} 
-                            getOrderlists={getOrderlists}
+              <NewOrderList 
+                        orderId={orderId} 
+                        onClose={closeAddition} 
+                        getOrderlists={getOrderlists}
               />}
           </Modal>
+          <ToastContainer/>
         </Box>
-        <ToastContainer/>
-    </>
+
   )
 }
 

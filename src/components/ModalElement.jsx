@@ -7,11 +7,12 @@ import { useOrder } from '../context/OrderProvider'
 const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }) => {
 
     const isSmall = IsSmallScreen()
-    const { isLoading } = useOrder
+    const { isLoading } = useOrder()
 
   return (
-        <ModalContent w={isSmall? "95%" : "400px"} 
-                      maxW='98%'>
+        <ModalContent 
+                w={isSmall? "95%" : "400px"} 
+        >
             <ModalHeader>
                 {modalHeader}
             </ModalHeader>
@@ -20,16 +21,19 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                 {children}  
             </ModalBody>
             <ModalFooter>
-                <Button colorScheme='blue' mr={3} 
-                        onClick={onClose}
+                <Button 
+                    colorScheme='red' 
+                    mr='5px' 
+                    onClick={onClose}
                 >
                     Close
                 </Button>
-                {action && <button 
+                {action && <Button
+                                colorScheme='green' 
                                 onClick={actionFunction}
                 >
                     {isLoading? <Spinner size={20}/> : action}
-                </button>}
+                </Button>}
             </ModalFooter>
         </ModalContent>
   )
