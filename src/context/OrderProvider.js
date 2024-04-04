@@ -38,15 +38,15 @@ export const OrderProvider = ({children}) => {
 
     const createOrder = async (clientName) => {
         try {
-          setIsLoading(true)
+          // setIsLoading(true)
           console.log(isLoading)
-          const response = await axios.post('http://localhost:5000/order', {
+          const response = await axios.post('http://192.168.100.10:5000/order', {
             client: clientName
             })
           console.log(isLoading)
           setOrderId(response?.data?.data?.id)
           notifySuccess(response?.data?.message)
-          setIsLoading(false)
+          // setIsLoading(false)
         } catch (error) {
           console.log(error.message)
         } 
@@ -55,7 +55,7 @@ export const OrderProvider = ({children}) => {
     const processOrder = async (id) => {
 
         try {
-          const response = await axios.patch(`http://localhost:5000/order/process/${id}`)
+          const response = await axios.patch(`http://192.168.100.10:5000/order/process/${id}`)
           notifySuccess(response?.data?.message)
 
         } catch (error) {
@@ -70,7 +70,7 @@ export const OrderProvider = ({children}) => {
     const finishOrder = async (id) => {
     
       try {
-        const response = await axios.patch(`http://localhost:5000/order/finish/${id}`)
+        const response = await axios.patch(`http://192.168.100.10:5000/order/finish/${id}`)
         notifySuccess(response?.data?.message)
 
       } catch (error) {
@@ -78,12 +78,12 @@ export const OrderProvider = ({children}) => {
       }
     }
 
-    const createOrderAndAddItems = async (id, orderItem) => {
+    const createOrderAndAddItems = async (id, orderItem, level, note) => {
       try {
-        const responseOrderList = await axios.post('http://localhost:5000/orderlist', {
+        const responseOrderList = await axios.post('http://192.168.100.10:5000/orderlist', {
           orderId: id,
-          additional: "telor mata sapi",
-          spicylevelId: 4
+          additional: note,
+          spicylevelId: parseInt(level)
         });
         console.log(isLoading)
         const orderlistId = responseOrderList.data?.data?.id;
@@ -92,7 +92,7 @@ export const OrderProvider = ({children}) => {
         const responsesOrderItem = await Promise.all(
           orderItem.map(async (item) => {
             try {
-              const responseOrderItem = await axios.post('http://localhost:5000/orderlistitem', {
+              const responseOrderItem = await axios.post('http://192.168.100.10:5000/orderlistitem', {
                 orderlistId: orderlistId,
                 productsId: item.productsId,
                 qty: item.qty
@@ -113,7 +113,7 @@ export const OrderProvider = ({children}) => {
 
     const deleteOrder = async (id) => {
       try {
-        const response = await axios.delete(`http://localhost:5000/order/${id}`)
+        const response = await axios.delete(`http://192.168.100.10:5000/order/${id}`)
         notifySuccess(response?.data?.message)
 
       } catch (error) {

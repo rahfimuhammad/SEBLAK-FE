@@ -11,6 +11,8 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
     const [orderItem, setOrderItem] = useState([])
     const { createOrderAndAddItems } = useOrder()
     const { products, getProducts } = useProduct()
+    const [note, setNote] = useState("")
+    const [level, setLevel] = useState(1)
 
     useEffect(() => {
       getProducts()
@@ -38,7 +40,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       };
 
       const handleAddItemToOrderlist = async (id) => {
-          await createOrderAndAddItems(id, orderItem)
+          await createOrderAndAddItems(id, orderItem, level, note)
           onClose()
           getOrderlists(orderId)
       }
@@ -92,6 +94,8 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
               gap='5px'  
       >
         <Input
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
           placeholder='Notes'/>
         <Box
           display='flex'
@@ -99,11 +103,11 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
           alignItems='center'
         >
           <NumberInput 
-                    defaultValue={0} 
+                    defaultValue={0}
+                    onChange={(value) => setLevel(value)} 
                     min={1} 
                     max={5} 
                     w='100px' 
-                    onChange={() => {}}
           >
             <NumberInputField />
             <NumberInputStepper>

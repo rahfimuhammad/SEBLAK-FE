@@ -32,7 +32,7 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                                 colorScheme='green' 
                                 onClick={actionFunction}
                 >
-                    {isLoading? <Spinner size={20}/> : action}
+                    {action}
                 </Button>}
             </ModalFooter>
         </ModalContent>

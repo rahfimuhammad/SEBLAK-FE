@@ -16,6 +16,7 @@ const Orders = () => {
   const { finishOrder, deleteOrder } = useOrder()
   const [orders, setOrders] = useState([])
   const [orderlists, setOrderlists] = useState([])
+  const [page, setPage] = useState(1)
   const [orderId, setOrderId] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isAddition, setIsAddition] = useState(false)
@@ -27,7 +28,7 @@ const Orders = () => {
   const getOrders = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(`http://localhost:5000/order/finishedorder/${status}`)
+      const response = await axios.get(`http://192.168.100.10:5000/order/finishedorder/${status}?page=${page}`)
 
       setOrders(response.data?.data)
     } catch (error) {
@@ -39,7 +40,7 @@ const Orders = () => {
 
   const getOrderlists = async () => {
     try {
-      const orderlists = await axios.get(`http://localhost:5000/orderlist/${orderId}`)
+      const orderlists = await axios.get(`http://192.168.100.10:5000/orderlist/${orderId}`)
       setOrderlists(orderlists?.data?.data)
     } catch (error) {
       console.log(error.message)
@@ -48,7 +49,7 @@ const Orders = () => {
 
   useEffect(() => {
     getOrders()
-  }, [status, setStatus])
+  }, [page])
 
   const openOrderDetail = (orderDetail) => {
     setIsOrderDetail(true)
@@ -82,6 +83,16 @@ const Orders = () => {
   const handleDeleteOrder = async (id) => {
     await deleteOrder(id)
     getOrders()
+  }
+
+  const handleNextPage = () => {
+    setPage(prevState => prevState += 1)
+    window.scrollTo(0, 0)
+  }
+
+  const handlePrevPage = () => {
+    setPage(prevState => prevState -= 1)
+    window.scrollTo(0, 0)
   }
 
   const mapOrders = orders?.map((order) => {
@@ -171,6 +182,14 @@ const Orders = () => {
             </div>
           }
           {mapOrders}
+          {!loading && <Box
+              display='flex'
+              gap='5px'
+          >
+            <Button colorScheme='blue' onClick={() => handlePrevPage()}>Prev</Button>
+            <Button colorScheme='blue' onClick={() => handleNextPage()}>Next</Button>
+          </Box>
+          }
           <Modal 
               isOpen={isOpen} 
               onClose={isAddition? closeAddition : closeOrderDetail}

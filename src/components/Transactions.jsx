@@ -5,7 +5,7 @@ import { WarningCircle } from 'phosphor-react'
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useDisclosure } from '@chakra-ui/react'
-import { Modal, ModalOverlay } from '@chakra-ui/react'
+import { Modal, ModalOverlay, Button } from '@chakra-ui/react'
 import OrderlistsDetail from './OrderlistsDetail'
 import Spinner from './Spinner'
 
@@ -14,13 +14,14 @@ const Transactions = () => {
   const [finishedOrder, setFinishedOrder] = useState([])
   const [orderId, setOrderId] = useState()
   const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const isSmall = IsSmallScreen()
 
   const getFinishedOrder = async () => {
     try {
       setLoading(true)
-      const res = await axios.get('http://localhost:5000/order/finishedorder/finished')
+      const res = await axios.get(`http://192.168.100.10:5000/order/finishedorder/finished?page=${page}`)
       setFinishedOrder(res?.data?.data)
     } catch (error) {
       console.log(error.message)
@@ -31,11 +32,21 @@ const Transactions = () => {
 
   useEffect(() => {
     getFinishedOrder()
-  }, [])
+  }, [page])
 
   const openOrderDetail = (orderId) => {
     setOrderId(orderId)
     onOpen()
+  }
+
+  const handleNextPage = () => {
+    setPage(prevState => prevState += 1)
+    window.scrollTo(0, 0)
+  }
+
+  const handlePrevPage = () => {
+    setPage(prevState => prevState -= 1)
+    window.scrollTo(0, 0)
   }
 
   return (
@@ -91,6 +102,14 @@ const Transactions = () => {
           <p>{value?.orderlist?.length} Pesanan</p>
         </Box>
         ))}
+        {!loading && <Box
+            display='flex'
+            gap='5px'
+        >
+          <Button colorScheme='blue' onClick={() => handlePrevPage()}>Prev</Button>
+          <Button colorScheme='blue' onClick={() => handleNextPage()}>Next</Button>
+        </Box>
+        }
         <Modal 
             isOpen={isOpen} 
             onClose={onClose}

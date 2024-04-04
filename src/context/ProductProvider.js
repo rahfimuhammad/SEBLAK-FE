@@ -36,7 +36,7 @@ export const ProductProvider = ({children}) => {
 
     const getProducts = async () => {
         try {
-          const response = await axios.get('http://localhost:5000/products')
+          const response = await axios.get('http://192.168.100.10:5000/products')
             setProducts(response?.data?.products)
         
         } catch (error) {
@@ -47,7 +47,7 @@ export const ProductProvider = ({children}) => {
     const addProduct = async (itemName, category, price) => {
          
       try {
-          const response = await axios.post('http://localhost:5000/products', {
+          const response = await axios.post('http://192.168.100.10:5000/products', {
             name:itemName,
             category: category,
             price: price

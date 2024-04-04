@@ -3,6 +3,7 @@ import axios from 'axios'
 import ModalElement from './ModalElement'
 import { WarningCircle, Fire } from 'phosphor-react'
 import { Box } from '@chakra-ui/react'
+import { formatCurrency } from '../function/formattedCurrency'
 
 const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
@@ -10,7 +11,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
   const getOrderDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/orderlist/${orderId}`)
+      const response = await axios.get(`http://192.168.100.10:5000/orderlist/${orderId}`)
       setOrderDetail(response.data?.data)
     } catch (error) {
       console.log(error.message);      
@@ -37,7 +38,10 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                       padding: "10px"}}
             > 
               <div>
-                <h5>Pesanan {i + 1}</h5>
+                <h4
+                  style={{fontWeight: "500"}}
+                >
+                  Pesanan {i + 1}</h4>
               </div>
               {
                 or?.orderlistitem?.map((o, i) => {
@@ -54,12 +58,27 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                       >
                         <p>{o.qty}</p>
                         x
-                        <p>{o.product.price}</p>
+                        <p>{formatCurrency(o.product.price)}</p>
                       </div>
                     </div>
                   )
                 }) 
               }
+              <Box
+                display='flex'
+                justifyContent='space-between'
+                alignItems='center'
+              >
+                <Box
+                  display='flex'
+                  gap='5px'
+                  alignItems='center' 
+                >
+                  <Fire size={20}/>
+                  <p>Level {or?.spicylevel?.level}</p>
+                </Box>
+                <p>{formatCurrency(or?.spicylevel?.price)}</p>
+              </Box>
               <Box
                 mt='5px'
                 display='flex'
@@ -70,14 +89,6 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
               </Box>
               <Box
                 mt='5px'
-                display='flex'
-                gap='5px'
-                alignItems='center' 
-              >
-                <Fire size={20}/>
-                <p>Level {or?.spicylevel?.level}</p>
-              </Box>
-              <Box
                 display='flex'
                 gap='5px'
                 alignItems='center' 
