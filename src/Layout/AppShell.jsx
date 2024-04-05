@@ -3,7 +3,8 @@ import Orders from "../components/Orders";
 import CreateOrder from "../components/CreateOrder";
 import Transactions from "../components/Transactions";
 import Products from "../components/Products";
-import { PlusCircle, ArchiveBox, ShoppingCart, ForkKnife } from "phosphor-react";
+import Analytics from "../components/Analytics";
+import { PlusCircle, ArchiveBox, ShoppingCart, ForkKnife, ShareNetwork } from "phosphor-react";
 import "./appShell.css"
 
 const Appshell = () => {
@@ -15,6 +16,7 @@ const Appshell = () => {
         {tab: Orders, icon: ShoppingCart, title: "Orders" },
         {tab: Transactions, icon: ArchiveBox, title: "Transactions" },
         {tab: Products, icon: ForkKnife, title: "Products" },
+        {tab: Analytics, icon: ShareNetwork, title: "Analytics" },
     ]
 
     const Tab = tabs[activeTab]?.tab

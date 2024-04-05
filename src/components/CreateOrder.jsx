@@ -41,8 +41,6 @@ const CreateOrder = () => {
   return (
       <Box 
         w='100%' 
-        // overflow='auto' 
-        // h='100%' 
         display='flex' 
         flexDirection='column' 
         gap='10px' 
