@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { WarningCircle } from 'phosphor-react' 
 import { formattedDate } from '../function/formattedDate'
 import axios  from 'axios'
-import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer } from '@chakra-ui/react'
+import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Modal, ModalOverlay} from '@chakra-ui/react'
+import OrderlistsDetail from '../components/OrderlistsDetail'
+import { useDisclosure } from '@chakra-ui/react'
 
 const AnalyticsTable = () => {
 
     const [tableData, setTableData] = useState([])
+    const [orderId, setOrderId] = useState()
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const getFinishedOrder = async () => {
          try {
@@ -25,6 +29,11 @@ const AnalyticsTable = () => {
         getFinishedOrder()
     }, [])
 
+    const getDetail = (id) => {
+        setOrderId(id)
+        onOpen()
+    }
+
     const mapTableData = () => {
         return tableData.map((data, index) => (
             <Tr key={index}>
@@ -36,6 +45,7 @@ const AnalyticsTable = () => {
                     alignItems='center'
                     gap='5px'
                     cursor='pointer'
+                    onClick={() => getDetail(data.id)}
                 >Detail <WarningCircle size={20}/>
                 </Td>
             </Tr>
@@ -59,6 +69,16 @@ const AnalyticsTable = () => {
                 </Tbody>
             </Table>
         </TableContainer>
+        <Modal 
+            isOpen={isOpen} 
+            onClose={onClose}
+        >
+          <ModalOverlay />
+          <OrderlistsDetail 
+                        orderId={orderId} 
+                        onClose={onClose} 
+          />
+        </Modal>
     </Box>
   )
 }
