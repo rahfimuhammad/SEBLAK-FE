@@ -11,7 +11,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
   const getOrderDetail = async () => {
     try {
-      const response = await axios.get(`http://192.168.100.10:5000/orderlist/${orderId}`)
+      const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
       setOrderDetail(response.data?.data)
     } catch (error) {
       console.log(error.message);      
@@ -90,11 +90,14 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
               <Box
                 mt='5px'
                 display='flex'
+                w='100%'
                 gap='5px'
-                alignItems='center' 
+                alignItems='flex-start' 
               >
                 <WarningCircle size={20}/>
-                <p>{or?.additional}</p>
+                <p
+                  style={{maxWidth: "calc(100% - 25px)"}}
+                >{or?.additional}</p>
               </Box>
             </div>
           )

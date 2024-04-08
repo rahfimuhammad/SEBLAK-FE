@@ -22,7 +22,7 @@ const CreateOrder = () => {
 
   const getOrderlists = async () => {
     try {
-      const orderlists = await axios.get(`http://192.168.100.10:5000/orderlist/${orderId}`)
+      const orderlists = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
       setOrderlists(orderlists?.data?.data)
     } catch (error) {
       console.log(error.message)

@@ -12,7 +12,7 @@ export const OrderProvider = ({children}) => {
 
     const [orderId, setOrderId] = useState()
     const [orderlistId, setOrderlistId] = useState()
-    const [isLoading, setIsLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const notifySuccess = (message) => toast.success(message, {
       position: "top-center",
       autoClose: 1000,
@@ -38,24 +38,25 @@ export const OrderProvider = ({children}) => {
 
     const createOrder = async (clientName) => {
         try {
-          // setIsLoading(true)
-          console.log(isLoading)
-          const response = await axios.post('http://192.168.100.10:5000/order', {
+          setLoading(true)
+          const response = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/order',{
             client: clientName
             })
-          console.log(isLoading)
+          console.log(loading)
           setOrderId(response?.data?.data?.id)
           notifySuccess(response?.data?.message)
-          // setIsLoading(false)
         } catch (error) {
           console.log(error.message)
-        } 
+        } finally {
+          setLoading(false)
+        }
       }
 
     const processOrder = async (id) => {
 
         try {
-          const response = await axios.patch(`http://192.168.100.10:5000/order/process/${id}`)
+          setLoading(true)
+          const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/process/${id}`)
           notifySuccess(response?.data?.message)
 
         } catch (error) {
@@ -64,35 +65,40 @@ export const OrderProvider = ({children}) => {
         } finally {
           setOrderId("")
           setOrderlistId("")
+          setLoading(false)
         }
       }
 
     const finishOrder = async (id) => {
     
       try {
-        const response = await axios.patch(`http://192.168.100.10:5000/order/finish/${id}`)
+        setLoading(true)
+        const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/finish/${id}`)
         notifySuccess(response?.data?.message)
 
       } catch (error) {
         notifyError(error.message)
+      } finally {
+        setLoading(false)
       }
     }
 
     const createOrderAndAddItems = async (id, orderItem, level, note) => {
       try {
-        const responseOrderList = await axios.post('http://192.168.100.10:5000/orderlist', {
+        setLoading(true)
+        const responseOrderList = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/orderlist', {
           orderId: id,
           additional: note,
           spicylevelId: parseInt(level)
         });
-        console.log(isLoading)
+
         const orderlistId = responseOrderList.data?.data?.id;
         notifySuccess(responseOrderList?.data?.message)
     
-        const responsesOrderItem = await Promise.all(
+        await Promise.all(
           orderItem.map(async (item) => {
             try {
-              const responseOrderItem = await axios.post('http://192.168.100.10:5000/orderlistitem', {
+              const responseOrderItem = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/orderlistitem',{
                 orderlistId: orderlistId,
                 productsId: item.productsId,
                 qty: item.qty
@@ -104,21 +110,24 @@ export const OrderProvider = ({children}) => {
             }
           })
         );
-    
-        console.log(responsesOrderItem);
+
       } catch (error) {
         notifyError(error.message);
+      } finally {
+        setLoading(false)
       }
     };
 
     const deleteOrder = async (id) => {
       try {
-        const response = await axios.delete(`http://192.168.100.10:5000/order/${id}`)
+        setLoading(true)
+        const response = await axios.delete(`https://seblak-api-40223dc59db0.herokuapp.com/order/${id}`)
         notifySuccess(response?.data?.message)
 
       } catch (error) {
-        
         notifyError(error.message) 
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -132,7 +141,7 @@ export const OrderProvider = ({children}) => {
         processOrder,
         finishOrder,
         deleteOrder,
-        isLoading
+        loading
 
     }
 

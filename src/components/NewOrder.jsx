@@ -6,8 +6,8 @@ import { useOrder } from '../context/OrderProvider'
 const NewOrder = ({ data, setClientName, onClose }) => {
 
   const { createOrder } = useOrder()
-  const handleCreateOrder = () => {
-    createOrder(data)
+  const handleCreateOrder = async () => {
+    await createOrder(data)
     onClose()
   }
     
@@ -15,7 +15,7 @@ const NewOrder = ({ data, setClientName, onClose }) => {
         <ModalElement 
                   onClose={onClose} 
                   action={"Create Order"} 
-                  actionFunction={handleCreateOrder} 
+                  actionFunction={() => handleCreateOrder()} 
                   modalHeader='New Order'
         >
           <FormControl 

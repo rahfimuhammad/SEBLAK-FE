@@ -10,7 +10,11 @@ const AnalyticsTable = () => {
 
     const getFinishedOrder = async () => {
          try {
-            const response = await axios.get(`http://192.168.100.10:5000/order/finishedorder/${"finished"}`)
+            const response = await axios.get(
+                // `http://192.168.100.10:5000/order/finishedorder/${"finished"}`
+                // `http://192.168.1.101:5000/order/finishedorder/${"finished"}`
+                `https://seblak-api-40223dc59db0.herokuapp.com/order/finishedorder/${"finished"}`
+            )
                 setTableData(response.data?.data)
          } catch (error) {
             console.log(error)

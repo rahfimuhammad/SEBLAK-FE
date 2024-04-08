@@ -21,7 +21,11 @@ const Transactions = () => {
   const getFinishedOrder = async () => {
     try {
       setLoading(true)
-      const res = await axios.get(`http://192.168.100.10:5000/order/finishedorder/finished?page=${page}`)
+      const res = await axios.get(
+        // `http://192.168.100.10:5000/order/finishedorder/finished?page=${page}`
+        // `http://192.168.1.101:5000/order/finishedorder/finished?page=${page}`
+        `https://seblak-api-40223dc59db0.herokuapp.com/order/finishedorder/finished?page=${page}`
+      )
       setFinishedOrder(res?.data?.data)
     } catch (error) {
       console.log(error.message)

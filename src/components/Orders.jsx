@@ -28,7 +28,11 @@ const Orders = () => {
   const getOrders = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(`http://192.168.100.10:5000/order/finishedorder/${status}?page=${page}`)
+      const response = await axios.get(
+        // `http://192.168.100.10:5000/order/finishedorder/${status}?page=${page}`
+        // `http://192.168.1.101:5000/order/finishedorder/${status}?page=${page}`
+        `https://seblak-api-40223dc59db0.herokuapp.com/order/finishedorder/${status}?page=${page}`
+      )
 
       setOrders(response.data?.data)
     } catch (error) {
@@ -40,7 +44,10 @@ const Orders = () => {
 
   const getOrderlists = async () => {
     try {
-      const orderlists = await axios.get(`http://192.168.100.10:5000/orderlist/${orderId}`)
+      const orderlists = await axios.get(
+        // `http://192.168.100.10:5000/orderlist/${orderId}`
+        `http://192.168.1.101:5000/orderlist/${orderId}`
+      )
       setOrderlists(orderlists?.data?.data)
     } catch (error) {
       console.log(error.message)
@@ -49,7 +56,7 @@ const Orders = () => {
 
   useEffect(() => {
     getOrders()
-  }, [page])
+  }, [page, status])
 
   const openOrderDetail = (orderDetail) => {
     setIsOrderDetail(true)
