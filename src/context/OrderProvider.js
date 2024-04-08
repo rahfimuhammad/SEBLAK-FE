@@ -101,6 +101,7 @@ export const OrderProvider = ({children}) => {
               const responseOrderItem = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/orderlistitem',{
                 orderlistId: orderlistId,
                 productsId: item.productsId,
+                productPrice: item.productPrice,
                 qty: item.qty
               });
               return responseOrderItem.data;
@@ -149,6 +150,6 @@ return (
     <OrderContext.Provider value={value}>
         {children}
     </OrderContext.Provider>
-)
+  )
 }
 

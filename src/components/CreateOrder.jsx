@@ -11,10 +11,11 @@ import OrderImage from "../assets/OrderImage.png"
 import NewOrder from './NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
+import Spinner from './Spinner'
 
 const CreateOrder = () => {
 
-  const { orderId, processOrder, isLoading } = useOrder()
+  const { orderId, processOrder, loading } = useOrder()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [clientName, setClientName] = useState("")
   const [orderlists, setOrderlists] = useState([])
@@ -126,7 +127,7 @@ const CreateOrder = () => {
               mb='10px' 
               onClick={handleProcessOrder}
           >
-            Save Order
+            {loading? <Spinner size={20}/> : "Save Order"}
           </Button> 
           : null
         }

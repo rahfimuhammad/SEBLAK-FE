@@ -36,11 +36,7 @@ export const ProductProvider = ({children}) => {
 
     const getProducts = async () => {
         try {
-          const response = await axios.get(
-            // 'http://192.168.100.10:5000/products'
-            // 'http://192.168.1.101:5000/products'
-            'https://seblak-api-40223dc59db0.herokuapp.com/products'
-          )
+          const response = await axios.get('https://seblak-api-40223dc59db0.herokuapp.com/products')
             setProducts(response?.data?.products)
         
         } catch (error) {
@@ -51,11 +47,7 @@ export const ProductProvider = ({children}) => {
     const addProduct = async (itemName, category, price) => {
          
       try {
-          const response = await axios.post(
-            // 'http://192.168.100.10:5000/products'
-            // 'http://192.168.1.101:5000/products'
-            'https://seblak-api-40223dc59db0.herokuapp.com/products'
-            , {
+          const response = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/products', {
             name:itemName,
             category: category,
             price: price
@@ -79,6 +71,6 @@ return (
     <ProductContext.Provider value={value}>
         {children}
     </ProductContext.Provider>
-)
+  )
 }
 
