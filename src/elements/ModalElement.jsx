@@ -9,7 +9,7 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
     const isSmall = IsSmallScreen()
     const { loading } = useOrder()
 
-  return (
+    return (
         <ModalContent 
                 w={isSmall? "95%" : "400px"} 
         >
@@ -30,7 +30,7 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                 </Button>
                 {action && <Button
                                 transition='ease-in 0.5s'
-                                colorScheme='green'
+                                colorScheme='teal'
                                 disabled={loading} 
                                 onClick={actionFunction}
                 >
@@ -38,7 +38,7 @@ const ModalElement = ({ children, modalHeader, action, onClose, actionFunction }
                 </Button>}
             </ModalFooter>
         </ModalContent>
-  )
+    )
 }
 
 export default ModalElement

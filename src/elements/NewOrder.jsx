@@ -1,7 +1,7 @@
 import React from 'react'
+import { useOrder } from '../context/OrderProvider'
 import { FormControl, Input } from '@chakra-ui/react'
 import ModalElement from './ModalElement'
-import { useOrder } from '../context/OrderProvider'
 
 const NewOrder = ({ data, setClientName, onClose }) => {
 

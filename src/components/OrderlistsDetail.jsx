@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import ModalElement from './ModalElement'
-import { WarningCircle, Fire } from 'phosphor-react'
+import ModalElement from '../elements/ModalElement'
+import Spinner from '../elements/Spinner'
+import { Info, Fire } from 'phosphor-react'
 import { Box } from '@chakra-ui/react'
 import { formatCurrency } from '../function/formattedCurrency'
 
 const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
 
   const [orderDetail, setOrderDetail] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const getOrderDetail = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
-      setOrderDetail(response.data?.data)
+        setOrderDetail(response.data?.data)
     } catch (error) {
-      console.log(error.message);      
+        console.log(error.message);      
+    } finally {
+        setLoading(false)
     }
   }
 
@@ -29,10 +34,15 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                     action={action} 
                     actionFunction={() => actionFunction(orderId)}
       >
-        {orderDetail?.map((or, i) => {
+        {loading && 
+        <Box w='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
+          <Spinner size={32} />
+        </Box>
+        }
+        {orderDetail?.map((orderlist, index) => {
           return (
             <div 
-              key={or?.id} 
+              key={orderlist?.id} 
               style={{backgroundColor: "white", 
                       borderRadius: "10px", 
                       padding: "10px"}}
@@ -41,24 +51,24 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                 <h4
                   style={{fontWeight: "500"}}
                 >
-                  Pesanan {i + 1}</h4>
+                  Pesanan {index + 1}</h4>
               </div>
               {
-                or?.orderlistitem?.map((o, i) => {
+                orderlist?.orderlistitem?.map((item, index) => {
                   return (
                     <div
-                      key={i} 
+                      key={index} 
                       style={{display: "flex", 
                               justifyContent: "space-between"}}
                     >
-                      <p>{o.product.name}</p>
+                      <p>{item.productName}</p>
                       <div 
                         style={{display: "flex", 
                                 gap: "10px"}}
                       >
-                        <p>{o.qty}</p>
+                        <p>{item.qty}</p>
                         x
-                        <p>{formatCurrency(o.product.price)}</p>
+                        <p>{formatCurrency(item.productPrice)}</p>
                       </div>
                     </div>
                   )
@@ -74,10 +84,10 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                   gap='5px'
                   alignItems='center' 
                 >
-                  <Fire size={20}/>
-                  <p>Level {or?.spicylevel?.level}</p>
+                  <Fire size={25}/>
+                  <p>Level {orderlist?.spicylevel?.level}</p>
                 </Box>
-                <p>{formatCurrency(or?.spicylevel?.price)}</p>
+                <p>{formatCurrency(orderlist?.spicylevelPrice)}</p>
               </Box>
               <Box
                 mt='5px'
@@ -87,18 +97,20 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                 <p><b>Subtotal: </b></p>
                 <p>Rp. 12.500,00</p>
               </Box>
-              <Box
+              {orderlist?.additional &&
+                <Box
                 mt='5px'
                 display='flex'
                 w='100%'
                 gap='5px'
                 alignItems='flex-start' 
               >
-                <WarningCircle size={20}/>
+                <Info size={25}/>
                 <p
                   style={{maxWidth: "calc(100% - 25px)"}}
-                >{or?.additional}</p>
+                >{orderlist?.additional}</p>
               </Box>
+              }
             </div>
           )
         })}

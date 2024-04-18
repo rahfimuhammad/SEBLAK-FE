@@ -31,7 +31,7 @@ const Appshell = () => {
                             <div className={`tab ${activeTab === index? "active" : ""}`}  onClick={() => setActiveTab(index)} key={index}>
                                 <div className="tab-wrapper">
                                     <Icon size={32}/>
-                                    <h5 className="tab-title">{tab.title}</h5>
+                                    <h5 style={{fontWeight: "bold"}} className="tab-title">{tab.title}</h5>
                                 </div>       
                             </div>
                         )

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Box, Modal, ModalOverlay, Button, useDisclosure } from '@chakra-ui/react'
+import { Box, Modal, ModalOverlay, Button, useDisclosure, Select } from '@chakra-ui/react'
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
-import OrderlistsDetail from './OrderlistsDetail'
-import { WarningCircle } from 'phosphor-react'
-import NewOrderList from './NewOrderList'
 import { useOrder } from '../context/OrderProvider'
 import { ToastContainer } from 'react-toastify'
+import { CaretLeft, CaretRight, Info } from 'phosphor-react'
+import OrderlistsDetail from './OrderlistsDetail'
+import NewOrderList from './NewOrderList'
+import Spinner from '../elements/Spinner'
+import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from './Spinner'
 
 const Orders = () => {
 
@@ -17,6 +17,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([])
   const [orderlists, setOrderlists] = useState([])
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(1)
   const [orderId, setOrderId] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isAddition, setIsAddition] = useState(false)
@@ -28,9 +29,10 @@ const Orders = () => {
   const getOrders = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/finishedorder/${status}?page=${page}`)
+      const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/${status}?page=${page}`)
 
       setOrders(response.data?.data)
+      setPageSize(response.data?.totalPages)
     } catch (error) {
       console.log(error)
     } finally {
@@ -40,7 +42,7 @@ const Orders = () => {
 
   const getOrderlists = async () => {
     try {
-      const orderlists = await axios.get(`http://192.168.1.101:5000/orderlist/${orderId}`)
+      const orderlists = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
       setOrderlists(orderlists?.data?.data)
     } catch (error) {
       console.log(error.message)
@@ -114,7 +116,7 @@ const Orders = () => {
                   alignItems: "center"}}
         >
           <p><b>{order.client}</b></p>
-          <WarningCircle 
+          <Info 
                       size={25} 
                       style={{cursor: "pointer"}} 
                       onClick={() => openOrderDetail(order.id)}
@@ -126,7 +128,7 @@ const Orders = () => {
           style={{display: "flex", 
                   gap: "5px"}}
         >
-          <Button colorScheme='green' 
+          <Button colorScheme='teal' 
                   onClick={() => openAddition(order.id)}
           >
             Addition
@@ -157,12 +159,10 @@ const Orders = () => {
             display='flex' 
             gap='5px'
           >
-            <Button onClick={() => setStatus("processed")}>
-              Processed
-            </Button>
-            <Button onClick={() => setStatus("pending")}>
-              Pending
-            </Button>
+            <Select w='fit-content' onChange={(e) => setStatus(e.target.value)}>
+              <option value="processed" defaultChecked={true}>Processed</option>
+              <option value="pending" defaultChecked={false}>Pending</option>
+            </Select>
           </Box>
           {
           loading && 
@@ -182,12 +182,12 @@ const Orders = () => {
             </div>
           }
           {mapOrders}
-          {!loading && <Box
+          {(!loading && orders.length > 0) && <Box
               display='flex'
               gap='5px'
           >
-            <Button colorScheme='blue' onClick={() => handlePrevPage()}>Prev</Button>
-            <Button colorScheme='blue' onClick={() => handleNextPage()}>Next</Button>
+            <Button isDisabled={page === 1} colorScheme='gray' onClick={() => handlePrevPage()}><CaretLeft size={25}/></Button>
+            <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => handleNextPage()}><CaretRight size={25}/></Button>
           </Box>
           }
           <Modal 

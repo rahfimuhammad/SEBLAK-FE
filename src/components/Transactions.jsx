@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Box } from '@chakra-ui/react'
-import { WarningCircle } from 'phosphor-react'
+import { CaretLeft, CaretRight, Info } from 'phosphor-react'
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
-import { useDisclosure } from '@chakra-ui/react'
-import { Modal, ModalOverlay, Button } from '@chakra-ui/react'
+import { useDisclosure, Modal, ModalOverlay, Button } from '@chakra-ui/react'
 import OrderlistsDetail from './OrderlistsDetail'
-import Spinner from './Spinner'
+import Spinner from '../elements/Spinner'
 
 const Transactions = () => {
 
@@ -15,14 +14,17 @@ const Transactions = () => {
   const [orderId, setOrderId] = useState()
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(1)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const isSmall = IsSmallScreen()
 
   const getFinishedOrder = async () => {
     try {
       setLoading(true)
-      const res = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/finishedorder/finished?page=${page}`)
+      const res = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/finished?page=${page}`)
+      
       setFinishedOrder(res?.data?.data)
+      setPageSize(res?.data?.totalPages)
     } catch (error) {
       console.log(error.message)
     } finally {
@@ -92,7 +94,7 @@ const Transactions = () => {
                     alignItems: "center"}}
           >
             <p><b>{value.client}</b></p>
-            <WarningCircle 
+            <Info 
                       size={25} 
                       style={{cursor: "pointer"}} 
                       onClick={() => openOrderDetail(value.id)}
@@ -102,12 +104,13 @@ const Transactions = () => {
           <p>{value?.orderlist?.length} Pesanan</p>
         </Box>
         ))}
-        {!loading && <Box
+        {(!loading && finishedOrder?.length > 0) 
+        && <Box
             display='flex'
             gap='5px'
         >
-          <Button colorScheme='blue' onClick={() => handlePrevPage()}>Prev</Button>
-          <Button colorScheme='blue' onClick={() => handleNextPage()}>Next</Button>
+          <Button isDisabled={page === 1} colorScheme='gray' onClick={() => handlePrevPage()}><CaretLeft size={25}/></Button>
+          <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => handleNextPage()}><CaretRight size={25}/></Button>
         </Box>
         }
         <Modal 

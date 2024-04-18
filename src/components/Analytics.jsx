@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 
 const Analytics = () => {
   return (
-    <Box>
+    <Box w='100%'>
         <AnalyticsTable/>
     </Box>
   )

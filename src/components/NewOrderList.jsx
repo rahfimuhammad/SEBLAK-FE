@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
-         NumberIncrementStepper, NumberInputField, Text, FormControl, Input } from '@chakra-ui/react'
+        NumberIncrementStepper, NumberInputField, Text, FormControl, Input } from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
-import ModalElement from './ModalElement'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
 import { numberInputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
+import ModalElement from '../elements/ModalElement'
 
 const {
   definePartsStyle,
@@ -15,7 +15,7 @@ const {
 
 const xl = defineStyle({
   fontSize: "lg",
-  h: "12",
+  h: "10",
   px: "2"
 });
 
@@ -30,12 +30,21 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
 
     const [orderItem, setOrderItem] = useState([])
     const { createOrderAndAddItems } = useOrder()
-    const { products, getProducts } = useProduct()
+    const { products, getProducts, levels, getLevels } = useProduct()
+    const [levelPrice, setLevelPrice] = useState(0)
     const [note, setNote] = useState("")
     const [level, setLevel] = useState(1)
 
+    const getMenu = async () => {
+      await getProducts()
+      getLevels()
+    }
+
     useEffect(() => {
-      getProducts()
+
+      if(!products.length && !levels.length) {
+        getMenu()
+      }
     }, [])
 
     const handleQuantityChange = (quantity, product) => {
@@ -45,8 +54,14 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         if (qty > 0) {
     
           if (!orderItem.find(item => item.productsId === product.id)) {
-            setOrderItem([...orderItem, { productsId: product.id, qty: qty, productPrice: product.price }]);
+            
+            setOrderItem([...orderItem, { productsId: product.id, 
+                                          qty: qty, 
+                                          productName: product.name, 
+                                          productPrice: product.price 
+                                        }]);
           } else {
+            
             setOrderItem(orderItem.map(item => {
               if (item.productsId === product.id) {
                 return { ...item, qty: qty };
@@ -59,8 +74,13 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         }
       };
 
+      const onChangeLevel = (value) => {
+        setLevel(value)
+        setLevelPrice(levels[value - 1]?.price)
+      }
+
       const handleAddItemToOrderlist = async (id) => {
-          await createOrderAndAddItems(id, orderItem, level, note)
+          await createOrderAndAddItems(id, orderItem, level, levelPrice, note)
           onClose()
           getOrderlists(orderId)
       }
@@ -98,11 +118,11 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
               >
                 <NumberIncrementStepper
                   sx={{
-                        fontSize: '25px'}}
+                        fontSize: '18px'}}
                 />
                 <NumberDecrementStepper
                   sx={{
-                    fontSize: '25px'}}
+                    fontSize: '18px'}}
                 />
               </NumberInputStepper>
             </NumberInput>
@@ -114,7 +134,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
     <ModalElement 
               action={"Add Item"} 
               onClose={onClose} 
-              actionFunction={() => handleAddItemToOrderlist(orderId)} 
+              actionFunction={() => handleAddItemToOrderlist(orderId, )} 
               modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
@@ -136,7 +156,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         >
           <NumberInput 
                     defaultValue={0}
-                    onChange={(value) => setLevel(value)} 
+                    onChange={(value) => onChangeLevel(value)} 
                     min={1} 
                     max={5}
                     w='100px' 
@@ -151,11 +171,11 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
             >
               <NumberIncrementStepper
                             sx={{
-                              fontSize: '25px'}}
+                              fontSize: '18px'}}
               />
               <NumberDecrementStepper 
                             sx={{
-                              fontSize: '25px'}}
+                              fontSize: '18px'}}
               />
             </NumberInputStepper>
           </NumberInput>

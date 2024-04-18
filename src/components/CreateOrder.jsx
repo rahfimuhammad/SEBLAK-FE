@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { useOrder } from '../context/OrderProvider'
 import { useDisclosure } from '@chakra-ui/react'
 import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { PlusCircle } from 'phosphor-react'
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
 import OrderImage from "../assets/OrderImage.png"
-import NewOrder from './NewOrder'
+import NewOrder from '../elements/NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
-import Spinner from './Spinner'
+import Spinner from '../elements/Spinner'
+import axios from 'axios'
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateOrder = () => {
 
@@ -24,9 +24,10 @@ const CreateOrder = () => {
   const getOrderlists = async () => {
     try {
       const orderlists = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
-      setOrderlists(orderlists?.data?.data)
+        setOrderlists(orderlists?.data?.data)
+        
     } catch (error) {
-      console.log(error.message)
+        console.log(error.message)
     }
   }
 
