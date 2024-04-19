@@ -121,6 +121,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
             </div>
           )
         })}
+        {!loading && 
         <Box 
           p='10px' 
           display='flex' 
@@ -131,6 +132,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
             <p><b>Total:</b></p>
             <p><b>{formatCurrency(totalAmount)}</b></p>
         </Box>
+        }
       </ModalElement>
     </>
   )

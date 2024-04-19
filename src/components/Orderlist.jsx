@@ -69,11 +69,17 @@ const Orderlist = ({ orderlist, index }) => {
               {formatCurrency(orderlist?.spicylevel?.price)}
             </p>
           </div>
-          <div>
-            <p>Total</p>
-          </div>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+          >
+            <p><b>Subtotal:</b></p>
+            <p><b>{formatCurrency(orderlist?.total)}</b></p>
+          </Box>
 
         </div>
+        {orderlist?.additional && 
         <div 
           style={{padding: "0 10px", 
                   display: "flex",
@@ -83,6 +89,7 @@ const Orderlist = ({ orderlist, index }) => {
           <WarningCircle size={20}/>
           <p>{orderlist?.additional}</p>
         </div>
+        }
     </Box>
   )
 }

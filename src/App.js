@@ -1,5 +1,5 @@
 import React from 'react';
-import AppShell from './layout/AppShell';
+import AppShell from './Layout/AppShell';
 import { OrderProvider } from './context/OrderProvider';
 import { ProductProvider } from './context/ProductProvider';
 function App() {

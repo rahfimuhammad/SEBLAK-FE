@@ -65,7 +65,7 @@ const CreateOrder = () => {
           />
         </Box>
         }
-        <div 
+        <Box 
           style={{display: "flex", 
                   flexDirection: "column", 
                   gap: "10px", 
@@ -79,7 +79,7 @@ const CreateOrder = () => {
                       orderlist={orderlist} 
                       index={index}/>
           ))}
-        </div>
+        </Box>
         {!orderId 
         &&
         <div 
