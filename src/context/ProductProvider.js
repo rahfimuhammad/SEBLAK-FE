@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 const ProductContext = React.createContext()
 
@@ -11,8 +10,8 @@ export const useProduct = () => {
 
 export const ProductProvider = ({children}) => {
 
-    const [products, setProducts] = useLocalStorage("products", [])
-    const [levels, setLevels] = useLocalStorage("levels", [])
+    const [products, setProducts] = useState([])
+    const [levels, setLevels] = useState([])
     const [loading, setLoading] = useState(false)
     const notifySuccess = (message) => toast.success(message, {
       position: "top-center",

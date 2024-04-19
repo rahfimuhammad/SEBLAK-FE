@@ -52,7 +52,10 @@ const Products = () => {
     })
 
   useEffect(() => {
-    getProducts()
+    if(!products.length) {
+      getProducts()
+    }
+    
   }, [])
 
 

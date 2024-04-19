@@ -1,5 +1,5 @@
 1. Table Styling --------------------------------------------------------------------> DONE
-2. Total Order and Subtotal
+2. Total Order and Subtotal ---------------------------------------------------------> DONE
 3. Sort Product by Name -------------------------------------------------------------> DONE
 4. Create Analytics Component (sales report and product report)
 5. Loading component while getOrderlist
@@ -10,7 +10,7 @@
 10. Function to edit and delete product
 11. Styling Products Component ------------------------------------------------------> DONE
 12. Get Product by Category
-13. Dropdown menu Food and Drink on create product
+13. Dropdown menu Food and Drink on create product --------------------------------- > DONE
 14. Input Validation (Create Product and Create Order)
 15. Dialogue Box on Delete Order and Delete Product
 16. Pagination styling and validation -----------------------------------------------> DONE

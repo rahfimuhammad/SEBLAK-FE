@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
-        NumberIncrementStepper, NumberInputField, Text, FormControl, Input } from '@chakra-ui/react'
+        NumberIncrementStepper, NumberInputField, Text, FormControl, Input, 
+        Button} from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
@@ -35,12 +36,12 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
     const [note, setNote] = useState("")
     const [level, setLevel] = useState(1)
 
-    const getMenu = async () => {
-      await getProducts()
-      getLevels()
-    }
-
     useEffect(() => {
+
+      const getMenu = async () => {
+        await getProducts()
+        getLevels()
+      }
 
       if(!products.length && !levels.length) {
         getMenu()
@@ -72,18 +73,18 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         } else {
           setOrderItem(orderItem.filter(item => item.productsId !== product.id));
         }
-      };
+    };
 
       const onChangeLevel = (value) => {
         setLevel(value)
         setLevelPrice(levels[value - 1]?.price)
-      }
+    }
 
-      const handleAddItemToOrderlist = async (id) => {
-          await createOrderAndAddItems(id, orderItem, level, levelPrice, note)
+      const handleAddItemToOrderlist = async (id, totalAmount) => {
+          await createOrderAndAddItems(id, orderItem, level, levelPrice, note, totalAmount)
           onClose()
           getOrderlists(orderId)
-      }
+    }
 
     const mapProducts = products?.map((product, index) => {
         return (
@@ -128,17 +129,21 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
             </NumberInput>
           </ListItem>
         )
-      })
+    })
+
+    const subTotal = orderItem.reduce((total, item) => total + item.qty * item.productPrice, 0)
+    const totalAmount = subTotal + levelPrice
 
   return (
     <ModalElement 
               action={"Add Item"} 
               onClose={onClose} 
-              actionFunction={() => handleAddItemToOrderlist(orderId, )} 
+              actionFunction={() => handleAddItemToOrderlist(orderId, totalAmount)} 
               modalHeader={"Add Item"}>
       <List spacing={3}>
         {mapProducts}
       </List>
+      <Button onClick={() => console.log(totalAmount)}>Test</Button>
       <FormControl
               mt='10px'
               display='flex'

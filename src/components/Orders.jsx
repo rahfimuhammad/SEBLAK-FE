@@ -76,8 +76,8 @@ const Orders = () => {
     onClose()
   }
 
-  const handleFinishOrder = async (id) => {
-    await finishOrder(id)
+  const handleFinishOrder = async (id, total) => {
+    await finishOrder(id, total)
     getOrders()
     onClose()
   }
@@ -85,16 +85,6 @@ const Orders = () => {
   const handleDeleteOrder = async (id) => {
     await deleteOrder(id)
     getOrders()
-  }
-
-  const handleNextPage = () => {
-    setPage(prevState => prevState += 1)
-    window.scrollTo(0, 0)
-  }
-
-  const handlePrevPage = () => {
-    setPage(prevState => prevState -= 1)
-    window.scrollTo(0, 0)
   }
 
   const mapOrders = orders?.map((order) => {
@@ -186,8 +176,8 @@ const Orders = () => {
               display='flex'
               gap='5px'
           >
-            <Button isDisabled={page === 1} colorScheme='gray' onClick={() => handlePrevPage()}><CaretLeft size={25}/></Button>
-            <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => handleNextPage()}><CaretRight size={25}/></Button>
+            <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><CaretLeft size={25}/></Button>
+            <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><CaretRight size={25}/></Button>
           </Box>
           }
           <Modal 

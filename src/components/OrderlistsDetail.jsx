@@ -11,28 +11,35 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
   const [orderDetail, setOrderDetail] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const getOrderDetail = async () => {
-    try {
-      setLoading(true)
-      const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
-        setOrderDetail(response.data?.data)
-    } catch (error) {
-        console.log(error.message);      
-    } finally {
-        setLoading(false)
-    }
-  }
-
   useEffect(() => {
+
+    const getOrderDetail = async () => {
+      try {
+        setLoading(true)
+        const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
+          setOrderDetail(response.data?.data)
+      } catch (error) {
+          console.log(error.message);      
+      } finally {
+          setLoading(false)
+      }
+    }
+
     getOrderDetail()
+
   }, [orderId])
+
+  const totalAmount = orderDetail?.reduce((acc, curr) => {
+    return acc + curr?.total
+  }, 0)
+
 
   return (
     <>
       <ModalElement onClose={onClose} 
                     modalHeader={"Order Detail"} 
                     action={action} 
-                    actionFunction={() => actionFunction(orderId)}
+                    actionFunction={() => actionFunction(orderId, totalAmount)}
       >
         {loading && 
         <Box w='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -95,7 +102,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                 justifyContent='space-between'
               >
                 <p><b>Subtotal: </b></p>
-                <p>Rp. 12.500,00</p>
+                <p><b>{formatCurrency(orderlist?.total)}</b></p>
               </Box>
               {orderlist?.additional &&
                 <Box
@@ -114,6 +121,16 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
             </div>
           )
         })}
+        <Box 
+          p='10px' 
+          display='flex' 
+          justifyContent='space-between' 
+          alignItems='center'
+          borderTop='1px solid black'
+        >
+            <p><b>Total:</b></p>
+            <p><b>{formatCurrency(totalAmount)}</b></p>
+        </Box>
       </ModalElement>
     </>
   )

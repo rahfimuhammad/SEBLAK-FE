@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Info } from 'phosphor-react' 
 import { formattedDateTable } from '../function/formattedDate'
 import { formatCurrency } from '../function/formattedCurrency'
-import axios  from 'axios'
 import { useDisclosure, Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Modal, ModalOverlay, Button, Select} from '@chakra-ui/react'
+import { IsSmallScreen } from '../function/detectSmallScreen'
+import { CaretLeft, CaretRight}  from 'phosphor-react'
+import axios  from 'axios'
 import OrderlistsDetail from '../components/OrderlistsDetail'
 import Spinner from './Spinner'
-import { IsSmallScreen } from '../function/detectSmallScreen'
 
 const AnalyticsTable = () => {
 
@@ -17,22 +18,27 @@ const AnalyticsTable = () => {
     const [date, setDate] = useState("all")
     const [sortBy, setSortBy] = useState("datedesc")
     const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(0)
 
-    const getFinishedOrder = async () => {
-        try {
-            setLoading(true)
-            const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/finished?page=${page}&dateRange=${date}&sortBy=${sortBy}`)
-                setTableData(response.data?.data)
-        } catch (error) {
-                console.log(error)
-        } finally {
-                setLoading(false)
-        }
-    }
+    
 
     useEffect(() => {
+
+        const getFinishedOrder = async () => {
+            try {
+                setLoading(true)
+                const response = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/order/finished?page=${page}&dateRange=${date}&sortBy=${sortBy}`)
+                    setTableData(response.data?.data)
+                    setPageSize(response.data?.totalPages)
+            } catch (error) {
+                    console.log(error)
+            } finally {
+                    setLoading(false)
+            }
+        }
         getFinishedOrder()
-    }, [sortBy, date])
+        
+    }, [sortBy, date, page])
 
     const getDetail = (id) => {
         setOrderId(id)
@@ -44,7 +50,7 @@ const AnalyticsTable = () => {
             <Tr key={index}>
                 <Td position='sticky' left='0' bg='white' whiteSpace= 'nowrap' overflow='auto'>{data.client}</Td>
                 <Td whiteSpace= 'nowrap' overflow='auto'>{formattedDateTable(data.createdAt)}</Td>
-                <Td whiteSpace= 'nowrap' overflow='auto'>{formatCurrency(25000)}</Td>
+                <Td whiteSpace= 'nowrap' overflow='auto'>{formatCurrency(data.total)}</Td>
                 <Td
                     display='flex'
                     alignItems='center'
@@ -99,6 +105,16 @@ const AnalyticsTable = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
+            }
+            {(!loading && tableData.length > 0) && <Box
+                                                    display='flex'
+                                                    gap='5px'
+                                                    justifyContent='center'
+                                                    alignItems='center'
+            >
+                <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><CaretLeft size={25}/></Button>
+                <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><CaretRight size={25}/></Button>
+            </Box>
             }
             <Modal 
                 isOpen={isOpen} 

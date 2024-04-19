@@ -51,7 +51,7 @@ export const OrderProvider = ({children}) => {
         } finally {
             setLoading(false)
         }
-      }
+    }
 
     const processOrder = async (id) => {
 
@@ -68,13 +68,15 @@ export const OrderProvider = ({children}) => {
             setOrderlistId("")
             setLoading(false)
         }
-      }
+    }
 
-    const finishOrder = async (id) => {
+    const finishOrder = async (id, total) => {
     
       try {
         setLoading(true)
-        const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/finish/${id}`)
+        const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/finish/${id}`, {
+          total: total
+        })
           notifySuccess(response?.data?.message)
 
       } catch (error) {
@@ -84,14 +86,15 @@ export const OrderProvider = ({children}) => {
       }
     }
 
-    const createOrderAndAddItems = async (id, orderItem, level, levelPrice, note) => {
+    const createOrderAndAddItems = async (id, orderItem, level, levelPrice, note, totalAmount) => {
       try {
         setLoading(true)
         const responseOrderList = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/orderlist', {
           orderId: id,
           additional: note,
           spicylevelId: parseInt(level),
-          spicylevelPrice: parseInt(levelPrice)
+          spicylevelPrice: parseInt(levelPrice),
+          total: totalAmount
         });
 
           const orderlistId = responseOrderList.data?.data?.id;
