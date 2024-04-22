@@ -1,32 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import { Box, FormControl, Input, Button, Modal, ModalOverlay, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Select } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { Box, Button, Modal, ModalOverlay, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Select } from '@chakra-ui/react'
 import { formatCurrency } from "../function/formattedCurrency"
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useProduct } from '../context/ProductProvider'
 import { ToastContainer } from 'react-toastify'
 import { useDisclosure } from '@chakra-ui/react'
-import ModalElement from '../elements/ModalElement'
 import { PencilSimple, Trash } from 'phosphor-react'
+import ProductForm from '../elements/ProductForm'
+import DeleteForm from '../elements/DeleteForm'
 
 const Products = () => {
 
-  const [itemName, setItemName] = useState("")
-  const [category, setCategory] = useState("")
-  const [price, setPrice] = useState("")
-  const { getProducts, products, addProduct, deleteProduct } = useProduct()
+  const { getProducts, products } = useProduct()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isDelete, setIsDelete] = useState(false)
+  const [isForm, setIsForm] = useState(false)
+  const [productId, setProductId] = useState("")
+  const { deleteProduct } = useProduct()
 
-  const handleAddProduct = async () => {
+  const handleDeleteProduct = async () => {
+      
+      await deleteProduct(productId)
+  }
 
-      await addProduct(itemName, category, price)
-      onClose() 
-      setItemName("")
-      setCategory("")
-      setPrice("")
-    }
-
-  const handleDeleteProduct = async (id) => {
-    await deleteProduct(id)
+  const onModalDelete = (id) => {
+    setProductId(id)
+    setIsDelete(true)
+    setIsForm(false)
+    onOpen()
+  }
+  
+  const onModalForm = (id) => {
+    setProductId(id)
+    setIsForm(true)
+    setIsDelete(false)
+    onOpen()
   }
 
   const mapProducts = products?.map((product, index) => {
@@ -40,11 +48,19 @@ const Products = () => {
               alignItems='center'
               gap='5px'
             >
-                <Button size='sm' colorScheme='teal'>
+                <Button 
+                    size='sm' 
+                    colorScheme='teal'
+                    onClick={() => onModalForm(product.id)}
+                >
                     <PencilSimple size={20}/>
                 </Button>
-                <Button size='sm' colorScheme='red'>
-                    <Trash size={20} onClick={() => handleDeleteProduct(product.id)}/>
+                <Button 
+                    size='sm' 
+                    colorScheme='red' 
+                    onClick={() => onModalDelete(product.id)}
+                >
+                    <Trash size={20}/>
                 </Button>
             </Td>
         </Tr>
@@ -55,7 +71,7 @@ const Products = () => {
     if(!products.length) {
       getProducts()
     }
-    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -63,7 +79,8 @@ const Products = () => {
     <Box 
       w='100%' 
       display='flex' 
-      flexDirection='column' 
+      flexDirection='column'
+      alignItems='center' 
       gap='10px' 
       p='10px'
     >
@@ -72,7 +89,7 @@ const Products = () => {
         display='flex' 
         gap='5px'
       >
-          <Button colorScheme='teal' onClick={onOpen}>Add Product</Button>
+          <Button colorScheme='teal' onClick={onModalForm}>Add Product</Button>
           <Select w='fit-content'>
             <option>Makanan</option>
             <option>Minuman</option>
@@ -99,36 +116,22 @@ const Products = () => {
           isOpen={isOpen} 
           onClose={onClose}>
         <ModalOverlay/>
-        <ModalElement 
-                  modalHeader="Add Product" 
-                  action="Add Product" 
-                  actionFunction={handleAddProduct}
-        >
-          <FormControl 
-                    w='100%' 
-                    display='flex' 
-                    flexDirection='column' gap='10px'
-          >
-            <Input 
-                style={{color: "black"}} 
-                value={itemName} 
-                placeholder='Item name' 
-                type="text" 
-                onChange={(e) => setItemName(e.target.value) } 
-            />
-            <Select placeholder='Category' onChange={(e) => setCategory(e.target.value) }>
-              <option value={"Makanan"}>Makanan</option>
-              <option value={"Minuman"}>Minuman</option>
-            </Select>
-            <Input 
-                color='black' 
-                value={price} 
-                placeholder='Item price' 
-                type="number" 
-                onChange={(e) => setPrice(parseInt(e.target.value)) } 
-            />
-          </FormControl>
-        </ModalElement>
+          {
+          isForm ? 
+          <ProductForm 
+                  onClose={onClose} 
+                  productId={productId}
+          /> : 
+          isDelete ? 
+          <DeleteForm 
+                  onClose={onClose}
+                  actionFunction={handleDeleteProduct}
+          /> : 
+          <ProductForm 
+                  onClose={onClose} 
+                  productId={productId}
+          />
+          }
       </Modal>
       <ToastContainer/>
     </Box>

@@ -20,14 +20,18 @@ const CreateOrder = () => {
   const [clientName, setClientName] = useState("")
   const [orderlists, setOrderlists] = useState([])
   const isSmall = IsSmallScreen()
+  const [isLoading, setIsLoading] = useState(false)
 
   const getOrderlists = async () => {
     try {
+      setIsLoading(true)
       const orderlists = await axios.get(`https://seblak-api-40223dc59db0.herokuapp.com/orderlist/${orderId}`)
         setOrderlists(orderlists?.data?.data)
         
     } catch (error) {
         console.log(error.message)
+    } finally {
+        setIsLoading(false)
     }
   }
 
@@ -73,6 +77,7 @@ const CreateOrder = () => {
                   height: "fit-content", 
                   alignItems: "center"}}
         >
+          {isLoading && <Spinner size={25}/>}
           {orderlists.map((orderlist, index) => (
               <Orderlist 
                       key={index} 

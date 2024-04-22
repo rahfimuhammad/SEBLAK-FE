@@ -10,11 +10,13 @@ import NewOrderList from './NewOrderList'
 import Spinner from '../elements/Spinner'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
+import NoDataImage from "../assets/NoDataImage.png"
 
 const Orders = () => {
 
   const { finishOrder, deleteOrder } = useOrder()
   const [orders, setOrders] = useState([])
+  // eslint-disable-next-line no-unused-vars
   const [orderlists, setOrderlists] = useState([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(1)
@@ -51,6 +53,7 @@ const Orders = () => {
 
   useEffect(() => {
     getOrders()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, status])
 
   const openOrderDetail = (orderDetail) => {
@@ -201,6 +204,20 @@ const Orders = () => {
               />}
           </Modal>
           <ToastContainer/>
+        {!loading && orders.length === 0 && <div
+          style={{width: "calc(100% - 20px)", 
+                  height: `${isSmall? "calc(100vh - 160px)" : "calc(100vh - 60px)"}`, 
+                  display: "flex", 
+                  justifyContent: "center", 
+                  alignItems: "center"}}
+        >
+            <img 
+              src={NoDataImage} 
+              alt='order' 
+              style={{width: "250px", 
+                      height: "auto"}}
+            />
+        </div>}
         </Box>
 
   )

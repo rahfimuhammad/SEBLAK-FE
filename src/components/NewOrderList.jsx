@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
-        NumberIncrementStepper, NumberInputField, Text, FormControl, Input, 
-        Button} from '@chakra-ui/react'
+        NumberIncrementStepper, NumberInputField, Text, FormControl, Input, } from '@chakra-ui/react'
 import { ShoppingBag } from 'phosphor-react'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
@@ -46,6 +45,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       if(!products.length && !levels.length) {
         getMenu()
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleQuantityChange = (quantity, product) => {
@@ -84,6 +84,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
           await createOrderAndAddItems(id, orderItem, level, levelPrice, note, totalAmount)
           onClose()
           getOrderlists(orderId)
+          setLevel(1)
     }
 
     const mapProducts = products?.map((product, index) => {
@@ -143,7 +144,6 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
       <List spacing={3}>
         {mapProducts}
       </List>
-      <Button onClick={() => console.log(totalAmount)}>Test</Button>
       <FormControl
               mt='10px'
               display='flex'

@@ -40,6 +40,7 @@ export const OrderProvider = ({children}) => {
         try {
           setLoading(true)
           const response = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/order',{
+            createdAt: new Date(),
             client: clientName
             })
 

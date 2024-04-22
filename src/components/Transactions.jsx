@@ -34,6 +34,7 @@ const Transactions = () => {
 
   useEffect(() => {
     getFinishedOrder()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   const openOrderDetail = (orderId) => {
