@@ -13,6 +13,8 @@ const Products = () => {
 
   const { getProducts, products } = useProduct()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [category, setCategory] = useState("Makanan")
+  const [filtered, setFiltered] = useState([])
   const [isDelete, setIsDelete] = useState(false)
   const [isForm, setIsForm] = useState(false)
   const [productId, setProductId] = useState("")
@@ -37,7 +39,17 @@ const Products = () => {
     onOpen()
   }
 
-  const mapProducts = products?.map((product, index) => {
+  useEffect(() => {
+    const filterProducts = () => {
+      const filteredProducts = products?.filter(product => product.category === category);
+      setFiltered(filteredProducts);
+    }
+  
+    filterProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, products]);
+  
+  const mapProducts = filtered?.map((product, index) => {
       return (
         <Tr key={index}>
             <Td whiteSpace= 'nowrap' overflow='auto'>{product.name}</Td>
@@ -90,9 +102,9 @@ const Products = () => {
         gap='5px'
       >
           <Button colorScheme='teal' onClick={onModalForm}>Add Product</Button>
-          <Select w='fit-content'>
-            <option>Makanan</option>
-            <option>Minuman</option>
+          <Select w='fit-content' onChange={(e) => setCategory(e.target.value)}>
+            <option value={"Makanan"}>Makanan</option>
+            <option value={"Minuman"}>Minuman</option>
           </Select>
       </Box>
       <Box w='100%'>
