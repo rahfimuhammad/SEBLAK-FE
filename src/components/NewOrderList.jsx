@@ -46,7 +46,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         getMenu()
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [products])
 
     const handleQuantityChange = (quantity, product) => {
 

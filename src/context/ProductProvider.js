@@ -67,10 +67,11 @@ export const ProductProvider = ({children}) => {
           })
   
           notifySuccess(response?.data?.message)
-          getProducts()
   
       } catch (error) {
           notifyError(error.message)
+      } finally {
+          getProducts()
       }
     }
 

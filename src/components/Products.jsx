@@ -11,7 +11,7 @@ import DeleteForm from '../elements/DeleteForm'
 
 const Products = () => {
 
-  const { getProducts, products } = useProduct()
+  const { getProducts, products, getLevels } = useProduct()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [category, setCategory] = useState("Makanan")
   const [filtered, setFiltered] = useState([])
@@ -79,9 +79,14 @@ const Products = () => {
       )
     })
 
+    const getMenu = async () => {
+      await getProducts()
+      getLevels()
+    }
+
   useEffect(() => {
     if(!products.length) {
-      getProducts()
+      getMenu()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -106,6 +111,7 @@ const Products = () => {
             <option value={"Makanan"}>Makanan</option>
             <option value={"Minuman"}>Minuman</option>
           </Select>
+          <Button onClick={() => getMenu()}>Refetch</Button>
       </Box>
       <Box w='100%'>
         <TableContainer borderWidth="1px" w='100%' overflowX="auto" whiteSpace='collapse'>
