@@ -4,27 +4,7 @@ import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, Number
 import { ShoppingBag } from 'phosphor-react'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
-import { numberInputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
 import ModalElement from '../elements/ModalElement'
-
-const {
-  definePartsStyle,
-  defineMultiStyleConfig
-} = createMultiStyleConfigHelpers(numberInputAnatomy.keys);
-
-const xl = defineStyle({
-  fontSize: "lg",
-  h: "10",
-  px: "2"
-});
-
-const sizes = {
-  xl: definePartsStyle({ field: xl, stepper: xl, addon: xl })
-};
-
-export const numberInputTheme = defineMultiStyleConfig({ sizes });
-
 
 const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
 
@@ -105,26 +85,25 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
               <Text>{product.price}</Text>
             </Box>
             <NumberInput
+                    size='lg'
                     defaultValue={0} 
                     min={0} 
                     max={20} w='100px' 
                     onChange={(valueString) => handleQuantityChange(valueString, product)}
+                    focusInputOnChange={false}
             >
               <NumberInputField 
-                    sx={numberInputTheme.sizes.xl.field}
+                    readOnly
+                    tabIndex={-1}
               />
-              <NumberInputStepper
-                    sx={{
-                      w: "fit-content",
-                      h: "fit-content"}}
-              >
+              <NumberInputStepper>
                 <NumberIncrementStepper
                   sx={{
-                        fontSize: '18px'}}
+                        fontSize: '22px'}}
                 />
                 <NumberDecrementStepper
                   sx={{
-                    fontSize: '18px'}}
+                    fontSize: '22px'}}
                 />
               </NumberInputStepper>
             </NumberInput>
@@ -164,10 +143,10 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
                     onChange={(value) => onChangeLevel(value)} 
                     min={1} 
                     max={5}
-                    w='100px' 
+                    w='100px'
           >
             <NumberInputField 
-                    sx={numberInputTheme.sizes.xl.field}
+                    readOnly
             />
             <NumberInputStepper
                           sx={{

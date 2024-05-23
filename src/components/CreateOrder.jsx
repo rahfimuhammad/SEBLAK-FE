@@ -5,7 +5,6 @@ import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { PlusCircle } from 'phosphor-react'
 import { ToastContainer } from 'react-toastify'
-import OrderImage from "../assets/OrderImage.png"
 import NewOrder from '../elements/NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
@@ -101,7 +100,7 @@ const CreateOrder = () => {
                     alignItems: "center"}}
           >
             <img 
-              src={OrderImage} 
+              src='/assets/OrderImage.png' 
               alt='order' 
               style={{width: "250px", 
                       height: "auto"}}
