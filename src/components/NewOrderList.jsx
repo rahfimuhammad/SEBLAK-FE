@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
         NumberIncrementStepper, NumberInputField, Text, FormControl, Input, } from '@chakra-ui/react'
-import { ShoppingBag } from 'phosphor-react'
+import { ShoppingOutlined } from '@ant-design/icons'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
 import ModalElement from '../elements/ModalElement'
@@ -71,11 +71,11 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
         return (
           <ListItem 
                 display='flex' 
-                gap='5px' 
+                gap='8px' 
                 alignItems='center' 
                 key={index}
           >
-            <ShoppingBag size={32}/>
+            <ShoppingOutlined style={{fontSize: '32px'}}/>
             <Box 
               w='100%' 
               display='flex' 
@@ -120,7 +120,7 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
               onClose={onClose} 
               actionFunction={() => handleAddItemToOrderlist(orderId, totalAmount)} 
               modalHeader={"Add Item"}>
-      <List spacing={3}>
+      <List spacing={4}>
         {mapProducts}
       </List>
       <FormControl
@@ -139,27 +139,26 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
           alignItems='center'
         >
           <NumberInput 
+                    size='lg'
                     defaultValue={0}
-                    onChange={(value) => onChangeLevel(value)} 
+                    onChange={(value) => onChangeLevel(value)}
+                    focusInputOnChange={false} 
                     min={1} 
                     max={5}
                     w='100px'
           >
             <NumberInputField 
                     readOnly
+                    tabIndex={-1}
             />
-            <NumberInputStepper
-                          sx={{
-                            w: "fit-content",
-                            h: "fit-content"}}
-            >
+            <NumberInputStepper>
               <NumberIncrementStepper
                             sx={{
-                              fontSize: '18px'}}
+                              fontSize: '22px'}}
               />
               <NumberDecrementStepper 
                             sx={{
-                              fontSize: '18px'}}
+                              fontSize: '22px'}}
               />
             </NumberInputStepper>
           </NumberInput>

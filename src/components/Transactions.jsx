@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Box } from '@chakra-ui/react'
-import { CaretLeft, CaretRight, Info } from 'phosphor-react'
+import { LeftOutlined, RightOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useDisclosure, Modal, ModalOverlay, Button } from '@chakra-ui/react'
@@ -95,9 +95,8 @@ const Transactions = () => {
                     alignItems: "center"}}
           >
             <p><b>{value.client}</b></p>
-            <Info 
-                      size={25} 
-                      style={{cursor: "pointer"}} 
+            <InfoCircleOutlined  
+                      style={{fontSize: '25px', cursor: "pointer"}} 
                       onClick={() => openOrderDetail(value.id)}
             />
           </div>
@@ -110,8 +109,8 @@ const Transactions = () => {
             display='flex'
             gap='5px'
         >
-          <Button isDisabled={page === 1} colorScheme='gray' onClick={() => handlePrevPage()}><CaretLeft size={25}/></Button>
-          <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => handleNextPage()}><CaretRight size={25}/></Button>
+          <Button isDisabled={page === 1} colorScheme='gray' onClick={() => handlePrevPage()}><LeftOutlined style={{fontSize: '25px'}}/></Button>
+          <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => handleNextPage()}><RightOutlined style={{fontSize: '25px'}}/></Button>
         </Box>
         }
         <Modal 

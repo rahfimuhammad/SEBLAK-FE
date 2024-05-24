@@ -3,7 +3,7 @@ import { useOrder } from '../context/OrderProvider'
 import { useDisclosure } from '@chakra-ui/react'
 import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
-import { PlusCircle } from 'phosphor-react'
+import { PlusCircleOutlined } from '@ant-design/icons'
 import { ToastContainer } from 'react-toastify'
 import NewOrder from '../elements/NewOrder'
 import NewOrderList from './NewOrderList'
@@ -45,7 +45,8 @@ const CreateOrder = () => {
 
   return (
       <Box 
-        w='100%' 
+        w='100%'
+        h='100%' 
         display='flex' 
         flexDirection='column' 
         gap='10px' 
@@ -62,8 +63,8 @@ const CreateOrder = () => {
           justifyContent='center' 
           alignItems='center'
           onClick={handleCreateOrderlist}>
-          <PlusCircle 
-                  size={40} 
+          <PlusCircleOutlined 
+                  style={{fontSize: "40px"}} 
                   color='#5f656e'
           />
         </Box>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModalElement from '../elements/ModalElement'
 import Spinner from '../elements/Spinner'
-import { Info, Fire } from 'phosphor-react'
+import { InfoCircleOutlined, FireOutlined } from '@ant-design/icons'
 import { Box } from '@chakra-ui/react'
 import { formatCurrency } from '../function/formattedCurrency'
 
@@ -91,7 +91,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                   gap='5px'
                   alignItems='center' 
                 >
-                  <Fire size={25}/>
+                  <FireOutlined style={{fontSize: '25px'}}/>
                   <p>Level {orderlist?.spicylevel?.level}</p>
                 </Box>
                 <p>{formatCurrency(orderlist?.spicylevelPrice)}</p>
@@ -112,7 +112,7 @@ const OrderlistsDetail = ({ orderId, onClose, actionFunction, action }) => {
                 gap='5px'
                 alignItems='flex-start' 
               >
-                <Info size={25}/>
+                <InfoCircleOutlined style={{fontSize: '25px'}}/>
                 <p
                   style={{maxWidth: "calc(100% - 25px)"}}
                 >{orderlist?.additional}</p>

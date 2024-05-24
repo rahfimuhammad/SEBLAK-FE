@@ -4,7 +4,8 @@ import CreateOrder from "../components/CreateOrder";
 import Transactions from "../components/Transactions";
 import Products from "../components/Products";
 import Analytics from "../components/Analytics";
-import { PlusCircle, ArchiveBox, ShoppingCart, ForkKnife, ShareNetwork } from "phosphor-react";
+import { PlusCircleFilled, CarryOutFilled, ShoppingFilled, ProductFilled, PieChartFilled } from "@ant-design/icons";
+
 import "./appShell.css"
 
 const Appshell = () => {
@@ -12,11 +13,11 @@ const Appshell = () => {
     const [activeTab, setActiveTab] = useState(0)
 
     const tabs = [
-        {tab: CreateOrder, icon: PlusCircle, title: "Create Order" },
-        {tab: Orders, icon: ShoppingCart, title: "Orders" },
-        {tab: Transactions, icon: ArchiveBox, title: "Transactions" },
-        {tab: Products, icon: ForkKnife, title: "Products" },
-        {tab: Analytics, icon: ShareNetwork, title: "Analytics" },
+        {tab: CreateOrder, icon: PlusCircleFilled, title: "Create Order" },
+        {tab: Orders, icon: ShoppingFilled, title: "Orders" },
+        {tab: Transactions, icon: CarryOutFilled, title: "Transactions" },
+        {tab: Products, icon: ProductFilled, title: "Products" },
+        {tab: Analytics, icon: PieChartFilled, title: "Analytics" },
     ]
 
     const Tab = tabs[activeTab]?.tab
@@ -30,7 +31,7 @@ const Appshell = () => {
                         return (
                             <div className={`tab ${activeTab === index? "active" : ""}`}  onClick={() => setActiveTab(index)} key={index}>
                                 <div className="tab-wrapper">
-                                    <Icon size={32}/>
+                                    <Icon style={{fontSize: "32px"}}/>
                                     <h5 style={{fontWeight: "bold"}} className="tab-title">{tab.title}</h5>
                                 </div>       
                             </div>

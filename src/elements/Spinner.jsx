@@ -1,16 +1,11 @@
 import React from 'react'
-import { TailSpin } from 'react-loader-spinner'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const Spinner = ({size}) => {
   return (
-    <TailSpin visible={true}
-              height={size}
-              width={size}
-              color="black"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""/>
+    <LoadingOutlined
+      style={{fontSize: size}}
+    />
   )
 }
 

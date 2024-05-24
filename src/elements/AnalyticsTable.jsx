@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useOrder } from '../context/OrderProvider'
-import { Info, Trash } from 'phosphor-react' 
 import { formattedDateTable } from '../function/formattedDate'
 import { formatCurrency } from '../function/formattedCurrency'
 import { useDisclosure, Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Modal, ModalOverlay, Button, Select, Input} from '@chakra-ui/react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
-import { CaretLeft, CaretRight}  from 'phosphor-react'
 import axios  from 'axios'
 import OrderlistsDetail from '../components/OrderlistsDetail'
 import DeleteForm from './DeleteForm'
 import Spinner from './Spinner'
+import { LeftOutlined, RightOutlined, InfoCircleOutlined, DeleteOutlined } from '@ant-design/icons'
 
 const AnalyticsTable = () => {
 
@@ -82,10 +81,10 @@ const AnalyticsTable = () => {
                     cursor='pointer'
                 >
                     <Button size='sm' colorScheme='teal' onClick={() => onDetail(data.id)}>
-                        <Info size={20}/>
+                        <InfoCircleOutlined style={{fontSize: '20px'}}/>
                     </Button>
                     <Button size='sm' colorScheme='red' onClick={() => onDelete(data.id)}>
-                        <Trash size={20}/>
+                        <DeleteOutlined style={{fontSize: '20px'}}/>
                     </Button>
                 </Td>
             </Tr>
@@ -139,8 +138,8 @@ const AnalyticsTable = () => {
                                                     justifyContent='center'
                                                     alignItems='center'
             >
-                <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><CaretLeft size={25}/></Button>
-                <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><CaretRight size={25}/></Button>
+                <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><LeftOutlined style={{fontSize: '25px'}}/></Button>
+                <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><RightOutlined style={{fontSize: '25px'}}/></Button>
             </Box>
             }
             <Modal 

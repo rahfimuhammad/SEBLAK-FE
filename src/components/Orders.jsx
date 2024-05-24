@@ -4,7 +4,7 @@ import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useOrder } from '../context/OrderProvider'
 import { ToastContainer } from 'react-toastify'
-import { CaretLeft, CaretRight, Info } from 'phosphor-react'
+import { InfoCircleOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
 import OrderlistsDetail from './OrderlistsDetail'
 import NewOrderList from './NewOrderList'
 import Spinner from '../elements/Spinner'
@@ -109,9 +109,8 @@ const Orders = () => {
                   alignItems: "center"}}
         >
           <p><b>{order.client}</b></p>
-          <Info 
-                      size={25} 
-                      style={{cursor: "pointer"}} 
+          <InfoCircleOutlined  
+                      style={{fontSize: "25px", cursor: "pointer"}} 
                       onClick={() => openOrderDetail(order.id)}
           />
         </div>
@@ -179,8 +178,8 @@ const Orders = () => {
               display='flex'
               gap='5px'
           >
-            <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><CaretLeft size={25}/></Button>
-            <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><CaretRight size={25}/></Button>
+            <Button isDisabled={page === 1} colorScheme='gray' onClick={() => setPage(prevState => prevState -= 1)}><LeftOutlined style={{fontSize: '25px'}} /></Button>
+            <Button isDisabled={page === pageSize} colorScheme='gray' onClick={() => setPage(prevState => prevState += 1)}><RightOutlined style={{fontSize: '25px'}} /></Button>
           </Box>
           }
           <Modal 

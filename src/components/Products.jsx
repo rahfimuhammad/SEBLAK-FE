@@ -5,7 +5,7 @@ import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useProduct } from '../context/ProductProvider'
 import { ToastContainer } from 'react-toastify'
 import { useDisclosure } from '@chakra-ui/react'
-import { PencilSimple, Trash } from 'phosphor-react'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import ProductForm from '../elements/ProductForm'
 import DeleteForm from '../elements/DeleteForm'
 
@@ -65,14 +65,14 @@ const Products = () => {
                     colorScheme='teal'
                     onClick={() => onModalForm(product.id)}
                 >
-                    <PencilSimple size={20}/>
+                    <EditOutlined style={{fontSize: '20px'}}/>
                 </Button>
                 <Button 
                     size='sm' 
                     colorScheme='red' 
                     onClick={() => onModalDelete(product.id)}
                 >
-                    <Trash size={20}/>
+                    <DeleteOutlined style={{fontSize: '20px'}}/>
                 </Button>
             </Td>
         </Tr>

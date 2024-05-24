@@ -2,7 +2,7 @@ import React from 'react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { formatCurrency } from '../function/formattedCurrency'
 import { Box } from '@chakra-ui/react'
-import { WarningCircle } from 'phosphor-react'
+import { InfoCircleOutlined } from '@ant-design/icons'
 
 const Orderlist = ({ orderlist, index }) => {
 
@@ -86,7 +86,7 @@ const Orderlist = ({ orderlist, index }) => {
                   alignItems: "center",  
                   gap: "5px"}}
         >
-          <WarningCircle size={20}/>
+          <InfoCircleOutlined style={{fontSize: '20px'}}/>
           <p>{orderlist?.additional}</p>
         </div>
         }
