@@ -4,13 +4,11 @@ import { useDisclosure } from '@chakra-ui/react'
 import { Box, ModalOverlay, Button, Modal } from '@chakra-ui/react'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { PlusCircleOutlined } from '@ant-design/icons'
-import { ToastContainer } from 'react-toastify'
 import NewOrder from '../elements/NewOrder'
 import NewOrderList from './NewOrderList'
 import Orderlist from './Orderlist'
 import Spinner from '../elements/Spinner'
 import axios from 'axios'
-import 'react-toastify/dist/ReactToastify.css';
 
 const CreateOrder = () => {
 
@@ -45,8 +43,7 @@ const CreateOrder = () => {
 
   return (
       <Box 
-        w='100%'
-        h='100%' 
+        w='100%' 
         display='flex' 
         flexDirection='column' 
         gap='10px' 
@@ -137,7 +134,6 @@ const CreateOrder = () => {
           </Button> 
           : null
         }
-        <ToastContainer/>
       </Box>
   )
 }

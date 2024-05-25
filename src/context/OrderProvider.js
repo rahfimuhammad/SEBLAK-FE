@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
+import { useToast } from '@chakra-ui/react';
 import axios from "axios";
-import { toast, Bounce } from "react-toastify";
 
 const OrderContext = React.createContext()
 
@@ -13,28 +13,7 @@ export const OrderProvider = ({children}) => {
     const [orderId, setOrderId] = useState()
     const [orderlistId, setOrderlistId] = useState()
     const [loading, setLoading] = useState(false)
-    const notifySuccess = (message) => toast.success(message, {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      });
-  const notifyError = (message) => toast.error(message, {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      });
+    const toast = useToast()
 
     const createOrder = async (clientName) => {
         try {
@@ -45,10 +24,22 @@ export const OrderProvider = ({children}) => {
             })
 
             setOrderId(response?.data?.data?.id)
-            notifySuccess(response?.data?.message)
+            toast({
+              position: 'top',
+              title: response?.data?.message,
+              status: 'success',
+              duration: 3000,
+              isClosable: true,
+          });
 
         } catch (error) {
-            console.log(error.message)
+          toast({
+            position: 'top',
+            title: error.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        });
         } finally {
             setLoading(false)
         }
@@ -59,10 +50,22 @@ export const OrderProvider = ({children}) => {
         try {
           setLoading(true)
           const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/process/${id}`)
-            notifySuccess(response?.data?.message)
+          toast({
+            position: 'top',
+            title: response?.data?.message,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
 
         } catch (error) {
-            notifyError(error.message)
+          toast({
+            position: 'top',
+            title: error.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        });
 
         } finally {
             setOrderId("")
@@ -78,10 +81,22 @@ export const OrderProvider = ({children}) => {
         const response = await axios.patch(`https://seblak-api-40223dc59db0.herokuapp.com/order/finish/${id}`, {
           total: total
         })
-          notifySuccess(response?.data?.message)
+        toast({
+          position: 'top',
+          title: response?.data?.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+      });
 
       } catch (error) {
-          notifyError(error.message)
+        toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       } finally {
           setLoading(false)
       }
@@ -99,7 +114,6 @@ export const OrderProvider = ({children}) => {
         });
 
           const orderlistId = responseOrderList.data?.data?.id;
-          notifySuccess(responseOrderList?.data?.message)
     
         await Promise.all(
           orderItem.map(async (item) => {
@@ -119,8 +133,22 @@ export const OrderProvider = ({children}) => {
           })
         );
 
+        toast({
+          position: 'top',
+          title: responseOrderList?.data?.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+      });
+
       } catch (error) {
-          notifyError(error.message);
+        toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       } finally {
           setLoading(false)
       }
@@ -130,10 +158,22 @@ export const OrderProvider = ({children}) => {
       try {
         setLoading(true)
         const response = await axios.delete(`https://seblak-api-40223dc59db0.herokuapp.com/order/${id}`)
-          notifySuccess(response?.data?.message)
+        toast({
+          position: 'top',
+          title: response?.data?.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+      });
 
       } catch (error) {
-          notifyError(error.message) 
+        toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       } finally {
           setLoading(false)
       }

@@ -3,13 +3,11 @@ import { Box, Modal, ModalOverlay, Button, useDisclosure, Select } from '@chakra
 import { formattedDate } from '../function/formattedDate'
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useOrder } from '../context/OrderProvider'
-import { ToastContainer } from 'react-toastify'
 import { InfoCircleOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
 import OrderlistsDetail from './OrderlistsDetail'
 import NewOrderList from './NewOrderList'
 import Spinner from '../elements/Spinner'
 import axios from 'axios'
-import 'react-toastify/dist/ReactToastify.css';
 import NoDataImage from "../assets/NoDataImage.png"
 
 const Orders = () => {
@@ -202,7 +200,6 @@ const Orders = () => {
                         getOrderlists={getOrderlists}
               />}
           </Modal>
-          <ToastContainer/>
         {!loading && orders.length === 0 && <div
           style={{width: "calc(100% - 20px)", 
                   height: `${isSmall? "calc(100vh - 160px)" : "calc(100vh - 60px)"}`, 

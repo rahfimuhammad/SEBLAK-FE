@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { toast, Bounce } from "react-toastify";
 import useLocalStorage from "../hooks/useLocalStorage"
+import { useToast } from "@chakra-ui/react";
 
 const ProductContext = React.createContext()
 
@@ -14,28 +14,7 @@ export const ProductProvider = ({children}) => {
     const [products, setProducts] = useLocalStorage('products',[])
     const [levels, setLevels] = useLocalStorage('levels', [])
     const [loading, setLoading] = useState(false)
-    const notifySuccess = (message) => toast.success(message, {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Bounce,
-      });
-  const notifyError = (message) => toast.error(message, {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Bounce,
-      });
+    const toast = useToast()
 
     const getProducts = async () => {
         try {
@@ -43,7 +22,13 @@ export const ProductProvider = ({children}) => {
             setProducts(response?.data)
         
         } catch (error) {
-          notifyError(error.message)
+          toast({
+            position: 'top',
+            title: error.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        });
         }
     }
 
@@ -53,7 +38,13 @@ export const ProductProvider = ({children}) => {
           setLevels(response?.data?.levels)
       
       } catch (error) {
-          notifyError(error.message)
+        toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       }
     }
 
@@ -66,10 +57,22 @@ export const ProductProvider = ({children}) => {
             price: price
           })
   
-          notifySuccess(response?.data?.message)
+          toast({
+          position: 'top',
+          title: response?.data?.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+      });
   
       } catch (error) {
-          notifyError(error.message)
+          toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       } finally {
           getProducts()
       }
@@ -79,10 +82,22 @@ export const ProductProvider = ({children}) => {
       try {
         setLoading(true)
         const response = await axios.delete(`https://seblak-api-40223dc59db0.herokuapp.com/products/${id}`)
-          notifySuccess(response?.data?.message)
+          toast({
+          position: 'top',
+          title: response?.data?.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+      });
           getProducts()
       } catch (error) {
-        notifyError(error.message)
+        toast({
+          position: 'top',
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+      });
       } finally {
         setLoading(false)
       }

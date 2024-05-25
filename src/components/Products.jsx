@@ -3,7 +3,6 @@ import { Box, Button, Modal, ModalOverlay, TableContainer, Table, Thead, Tbody, 
 import { formatCurrency } from "../function/formattedCurrency"
 import { IsSmallScreen } from '../function/detectSmallScreen'
 import { useProduct } from '../context/ProductProvider'
-import { ToastContainer } from 'react-toastify'
 import { useDisclosure } from '@chakra-ui/react'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import ProductForm from '../elements/ProductForm'
@@ -151,7 +150,6 @@ const Products = () => {
           />
           }
       </Modal>
-      <ToastContainer/>
     </Box>
   )
 }
