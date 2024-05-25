@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, List, ListItem, NumberInputStepper, NumberDecrementStepper, NumberInput, 
         NumberIncrementStepper, NumberInputField, Text, FormControl, Input, } from '@chakra-ui/react'
-import { ShoppingOutlined } from '@ant-design/icons'
 import { useOrder } from '../context/OrderProvider'
 import { useProduct } from '../context/ProductProvider'
 import ModalElement from '../elements/ModalElement'
@@ -75,7 +74,6 @@ const NewOrderList = ({ orderId, onClose, getOrderlists }) => {
                 alignItems='center' 
                 key={index}
           >
-            <ShoppingOutlined style={{fontSize: '32px'}}/>
             <Box 
               w='100%' 
               display='flex' 

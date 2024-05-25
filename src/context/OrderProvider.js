@@ -106,7 +106,7 @@ export const OrderProvider = ({children}) => {
             try {
               const responseOrderItem = await axios.post('https://seblak-api-40223dc59db0.herokuapp.com/orderlistitem', {
                 orderlistId: orderlistId,
-                productsId: item.productsId,
+                productsId: parseInt(item.productsId),
                 productName: item.productName,
                 productPrice: item.productPrice,
                 qty: item.qty
